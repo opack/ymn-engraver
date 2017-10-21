@@ -1,12 +1,14 @@
-import { YmnChord } from './ymn-chord';
 import { YmnMeasure } from './ymn-measure';
+import { YmnBeatShape } from './ymn-beat-shape';
+import { YmnChord } from './ymn-chord';
 
 export class YmnBeat {
   public previous: YmnBeat;
   public next: YmnBeat;
   public measure: YmnMeasure;
 
-  private chords: Array<YmnChord> = [];
+  public chords: Array<YmnChord> = [];
+  public shape: YmnBeatShape;
 
   public parse(beatString: string): void {
     let previousChord: YmnChord;
@@ -26,5 +28,7 @@ export class YmnBeat {
       chord.parse(chordString);
       this.chords.push(chord);
     });
+
+    this.shape = new YmnBeatShape();
   }
 }

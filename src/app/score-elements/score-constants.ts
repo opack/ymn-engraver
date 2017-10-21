@@ -62,4 +62,4 @@ export const NOTES_TO_PITCHES: {[note: string]: string} = {
   'SI#': '1'
 };
 
-export const OCTAVE_INDICATION_REGEXP = /(T|B)\d|0/i;
+export const OCTAVE_INDICATION_REGEXP = /^((T|B)\d|0)$/i;

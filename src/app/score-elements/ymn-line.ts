@@ -1,12 +1,14 @@
 import { YmnScore } from './ymn-score';
+import { YmnLineShape } from './ymn-line-shape';
 import { YmnMeasure } from './ymn-measure';
 
 export class YmnLine {
   public previous: YmnLine;
   public next: YmnLine;
-  public music: YmnScore;
+  public score: YmnScore;
 
-  private measures: Array<YmnMeasure> = [];
+  public measures: Array<YmnMeasure> = [];
+  public shape: YmnLineShape;
 
   public parse(lineString: string): void {
     let previousMeasure: YmnMeasure;
@@ -26,5 +28,7 @@ export class YmnLine {
       measure.parse(measureString);
       this.measures.push(measure);
     });
+
+    this.shape = new YmnLineShape();
   }
 }

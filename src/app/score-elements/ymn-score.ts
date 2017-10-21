@@ -1,7 +1,16 @@
+import { YmnScoreShape } from './ymn-score-shape';
+import { YmnScoreLayout } from './ymn-score-layout';
 import { YmnLine } from './ymn-line';
 
 export class YmnScore {
-  private lines: Array<YmnLine> = [];
+  public lines: Array<YmnLine> = [];
+  public shape: YmnScoreShape;
+
+  constructor(
+    public title: string,
+    public author: string,
+    public tempo: number
+  ) {}
 
   public parse(scoreString: string): void {
     let previousLine: YmnLine;
@@ -11,7 +20,7 @@ export class YmnScore {
       const line = new YmnLine();
 
       // Set links
-      line.music = this;
+      line.score = this;
       if (previousLine !== undefined) {
         previousLine.next = line;
         line.previous = previousLine;
@@ -22,5 +31,12 @@ export class YmnScore {
       line.parse(lineString);
       this.lines.push(line);
     });
+
+    this.shape = new YmnScoreShape(this.title, this.author, this.tempo);
+  }
+
+  public layout() {
+    const scoreLayout = YmnScoreLayout.getInstance();
+    scoreLayout.layout(this);
   }
 }

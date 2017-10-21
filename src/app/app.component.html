@@ -1,4 +1,28 @@
-Input notes :<br>
-<textarea [(value)]="score" rows="5" columns="120"></textarea><br>
-<button (click)="engrave()">Engrave !</button>
-<!--<ymn-sheet [music]="parsedMusic"></ymn-sheet>-->
+<div class="container-fluid">
+    <div class="row align-items-start">
+        <div class="col-md-4">
+            <form>
+                <div class="form-group">
+                    <label for="scoreTitle">Title :</label>
+                    <input class="form-control" type="text" id="scoreTitle" #title placeholder="Für Elise">
+                </div>
+                <div class="form-group">
+                    <label for="scoreAuthor">Author :</label>
+                    <input class="form-control" type="text" id="scoreAuthor" #author placeholder="Ludwig Van Beethoven">
+                </div>
+                <div class="form-group">
+                    <label for="scoreAuthor">Tempo :</label>
+                    <input class="form-control" type="text" id="scoreTempo" #tempo placeholder="48">
+                </div>
+                <div class="form-group">
+                    <label for="scoreNotes">Notes :</label>
+                    <textarea class="form-control score-input" id="scoreNotes" name="scoreNotes" rows="5" [(ngModel)]="score"></textarea>
+                </div>
+                <button (click)="engrave()">Engrave !</button>
+            </form>
+        </div>
+        <div class="col">
+            <ymn-sheet [title]="title.value" [author]="author.value" [tempo]="tempo.value" [music]="musicToEngrave"></ymn-sheet>
+        </div>
+    </div>
+</div>

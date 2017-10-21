@@ -1,4 +1,5 @@
 import { YmnBeat } from './ymn-beat';
+import { YmnChordShape } from './ymn-chord-shape';
 import { YmnNote } from './ymn-note';
 
 export class YmnChord {
@@ -7,10 +8,12 @@ export class YmnChord {
   public beat: YmnBeat;
 
   public notes: Array<YmnNote> = [];
+  public shape: YmnChordShape;
 
   public parse(chordString: string): void {
     let previousNote: YmnNote;
     const notesString = chordString.split('+');
+    
     notesString.forEach(noteString => {
       const note = new YmnNote();
 
@@ -26,5 +29,7 @@ export class YmnChord {
       note.parse(noteString);
       this.notes.push(note);
     });
+
+    this.shape = new YmnChordShape();
   }
 }
