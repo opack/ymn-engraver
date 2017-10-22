@@ -1,10 +1,10 @@
 import { YmnScoreShape } from './ymn-score-shape';
 import { YmnScoreLayout } from './ymn-score-layout';
-import { YmnLine } from './ymn-line';
+import { YmnSystem } from './ymn-system';
 
 export class YmnScore {
-  public lines: Array<YmnLine> = [];
-  public shape: YmnScoreShape;
+  public children: Array<YmnSystem> = [];
+  public shape: YmnScoreShape = new YmnScoreShape();
 
   constructor(
     public title: string,
@@ -13,30 +13,33 @@ export class YmnScore {
   ) {}
 
   public parse(scoreString: string): void {
-    let previousLine: YmnLine;
-    const linesStrings = scoreString.split('\n');
+    let previousSystem: YmnSystem;
+    const systemsStrings = scoreString.split('#');
 
-    linesStrings.forEach(lineString => {
-      const line = new YmnLine();
+    systemsStrings.forEach(systemsString => {
+      const system = new YmnSystem();
 
+      // Add shape
+      this.shape.add(system.shape);
+      
       // Set links
-      line.score = this;
-      if (previousLine !== undefined) {
-        previousLine.next = line;
-        line.previous = previousLine;
+      system.parent = this;
+      if (previousSystem !== undefined) {
+        previousSystem.next = system;
+        system.previous = previousSystem;
       }
-      previousLine = line;
+      previousSystem = system;
 
       // Parse content
-      line.parse(lineString);
-      this.lines.push(line);
+      system.parse(systemsString);
+      this.children.push(system);
     });
 
-    this.shape = new YmnScoreShape(this.title, this.author, this.tempo);
+    this.shape.update(this.title, this.author, this.tempo);
   }
 
   public layout() {
-    const scoreLayout = YmnScoreLayout.getInstance();
+    const scoreLayout = new YmnScoreLayout();
     scoreLayout.layout(this);
   }
 }

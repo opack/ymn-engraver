@@ -16,4 +16,8 @@ export class YmnBeatShape extends Konva.Group {
         });
         this.add(this.separator);
     }
+
+    public updateWidth(): void {
+        this.width(this.getClientRect().width);
+    }
 }

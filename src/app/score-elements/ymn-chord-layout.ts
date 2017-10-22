@@ -1,29 +1,36 @@
 
 import { YmnChord } from './ymn-chord';
+import { YmnNoteLayout } from './ymn-note-layout';
 
 /**
  * Ensures that the notes in one chord are correcly laid out one to another
  */
 export class YmnChordLayout {
-    private static instance: YmnChordLayout;
-    public static getInstance(): YmnChordLayout {
-        if (this.instance === undefined) {
-            this.instance = new YmnChordLayout();
-        }
-        return this.instance;
-    }
+    public layout(chords: Array<YmnChord>, initialOffset: number): number {
+        // Layout each chord individually and record maxWidth
+        let maxWidth = 0;
+        chords.forEach(chord => {
+            let yOffset = 0;
+            chord.children.forEach(note => {
+                const noteLayout = new YmnNoteLayout();
+                yOffset = noteLayout.layout(note, yOffset); 
+            });
 
-    private constructor() {
-        // Singleton
-    }
-
-    public layout(chord: YmnChord): void {
-        let yOffset = 0;
-        chord.notes.forEach(note => {
-            chord.shape.add(note.shape);
-
-            note.shape.y(yOffset);
-            yOffset += note.shape.getClientRect().height;
+            chord.shape.updateSize();
+            if (chord.shape.width() > maxWidth) {
+                maxWidth = chord.shape.width();
+            }
         });
+
+        // Center each chord
+        /*const center = initialOffset + maxWidth / 2;
+        chords.forEach(chord => {
+            chord.shape.x(center - chord.shape.width() / 2);
+        });*/
+        chords.forEach(chord => {
+            chord.shape.x(initialOffset);
+        });
+
+        return initialOffset + maxWidth;
     }
 }

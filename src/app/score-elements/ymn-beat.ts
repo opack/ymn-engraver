@@ -5,10 +5,10 @@ import { YmnChord } from './ymn-chord';
 export class YmnBeat {
   public previous: YmnBeat;
   public next: YmnBeat;
-  public measure: YmnMeasure;
+  public parent: YmnMeasure;
 
-  public chords: Array<YmnChord> = [];
-  public shape: YmnBeatShape;
+  public children: Array<YmnChord> = [];
+  public shape: YmnBeatShape = new YmnBeatShape();
 
   public parse(beatString: string): void {
     let previousChord: YmnChord;
@@ -16,8 +16,11 @@ export class YmnBeat {
     chordsString.forEach(chordString => {
       const chord = new YmnChord();
 
+      // Add shape
+      this.shape.add(chord.shape);
+
       // Set links
-      chord.beat = this;
+      chord.parent = this;
       if (previousChord !== undefined) {
         previousChord.next = chord;
         chord.previous = previousChord;
@@ -26,9 +29,7 @@ export class YmnBeat {
 
       // Parse content
       chord.parse(chordString);
-      this.chords.push(chord);
+      this.children.push(chord);
     });
-
-    this.shape = new YmnBeatShape();
   }
 }
