@@ -13,15 +13,15 @@ export class YmnScoreLayout {
             y: ShapeConfig.score.title.topMargin
         });
         score.shape.author.position({
-            x: (ShapeConfig.score.width - score.shape.author.getWidth()) / 2,
-            y: score.shape.title.y() + score.shape.title.getHeight() + ShapeConfig.score.title.bottomSpacing
+            x: (ShapeConfig.score.width - score.shape.author.width()) / 2,
+            y: score.shape.title.y() + score.shape.title.height() + ShapeConfig.score.title.bottomSpacing
         });
         score.shape.tempo.position({
             x: ShapeConfig.score.tempo.leftPosition,
-            y: score.shape.author.y() + score.shape.author.getHeight()
+            y: score.shape.author.y() + score.shape.author.height()
         });
 
-        let yOffset = score.shape.tempo.y() + ShapeConfig.score.tempo.bottomSpacing;
+        let yOffset = score.shape.tempo.y() + score.shape.tempo.height() + ShapeConfig.score.tempo.bottomSpacing;
         score.children.forEach(system => {
             const systemLayout = new YmnSystemLayout();
             yOffset = systemLayout.layout(system, yOffset);
