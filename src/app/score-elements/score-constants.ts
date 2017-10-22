@@ -63,3 +63,5 @@ export const NOTES_TO_PITCHES: {[note: string]: string} = {
 };
 
 export const OCTAVE_INDICATION_REGEXP = /^((T|B)\d|0)$/i;
+
+export const SYSTEM_INDICATION_REGEXP = /\{((?:.|\s)+?)\}/g;

@@ -4,15 +4,15 @@
             <form>
                 <div class="form-group">
                     <label for="scoreTitle">Title :</label>
-                    <input class="form-control" type="text" id="scoreTitle" #title placeholder="Für Elise">
+                    <input class="form-control" type="text" id="scoreTitle" name="scoreTitle" placeholder="Für Elise" [(ngModel)]="title">
                 </div>
                 <div class="form-group">
                     <label for="scoreAuthor">Author :</label>
-                    <input class="form-control" type="text" id="scoreAuthor" #author placeholder="Ludwig Van Beethoven">
+                    <input class="form-control" type="text" id="scoreAuthor" name="scoreAuthor" placeholder="Ludwig Van Beethoven" [(ngModel)]="author">
                 </div>
                 <div class="form-group">
                     <label for="scoreAuthor">Tempo :</label>
-                    <input class="form-control" type="text" id="scoreTempo" #tempo placeholder="48">
+                    <input class="form-control" type="text" id="scoreTempo" name="scoreTempo" placeholder="48" [(ngModel)]="tempo">
                 </div>
                 <div class="form-group">
                     <label for="scoreNotes">Notes :</label>
@@ -22,7 +22,7 @@
             </form>
         </div>
         <div class="col">
-            <ymn-sheet [title]="title.value" [author]="author.value" [tempo]="tempo.value" [music]="musicToEngrave"></ymn-sheet>
+            <ymn-sheet [title]="title" [author]="author" [tempo]="tempo" [music]="musicToEngrave"></ymn-sheet>
         </div>
     </div>
 </div>

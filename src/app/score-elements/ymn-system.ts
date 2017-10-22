@@ -9,28 +9,4 @@ export class YmnSystem {
   public children: Array<YmnLine> = [];
 
   public shape: YmnSystemShape = new YmnSystemShape();
-
-  public parse(scoreString: string): void {
-    let previousLine: YmnLine;
-    const linesStrings = scoreString.split('\n');
-
-    linesStrings.forEach(lineString => {
-      const line = new YmnLine();
-
-      // Add shape
-      this.shape.add(line.shape);
-      
-      // Set links
-      line.parent = this;
-      if (previousLine !== undefined) {
-        previousLine.next = line;
-        line.previous = previousLine;
-      }
-      previousLine = line;
-
-      // Parse content
-      line.parse(lineString);
-      this.children.push(line);
-    });
-  }
 }
