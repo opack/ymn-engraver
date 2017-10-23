@@ -41,10 +41,14 @@ export const ShapeConfig = {
         pitchSpacing: 5
     },
     note: {
-        size: 30,
         width: 15,
-        height: 12,
-        fontSize: 12,
-        fontFamily: 'Calibri'
+        text: {
+            fontSize: 12,
+            fontFamily: 'Calibri'
+        },
+        circle: {
+            radius: 3,
+            color: 'black'
+        }
     }
 };

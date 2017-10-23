@@ -9,7 +9,8 @@ export class YmnNoteLayout {
      */
     public layout(note: YmnNote, initialOffset: number): number {
         // Layout the note
-        note.shape.text(note.pitch);
+        note.shape.update(note.pitch);
+        note.shape.updateSize();
         note.shape.y(initialOffset);
                 
         // Next note position will be below this note

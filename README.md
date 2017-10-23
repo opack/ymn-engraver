@@ -29,8 +29,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 # TODO
 * New features
- * Ability to directly update only modified parts of the score and layout impacted parts
  * Draws arcs between first and last notes of long lasting pitches (https://konvajs.github.io/docs/sandbox/Modify_Curves_with_Anchor_Points.html)
+ * Ability to directly update only modified parts of the score and layout impacted parts
+ * Add/remove parts from groups instead of using visible in order to improve performance
  * Add zoom (https://konvajs.github.io/docs/sandbox/Zooming_Relative_To_Pointer.html) and pan
  * Add ability to edit notes (https://konvajs.github.io/docs/sandbox/Editable_Text.html)
  * Add drag and drop notes (https://konvajs.github.io/docs/sandbox/Drag_and_Drop_Multiple_Shapes.html)
