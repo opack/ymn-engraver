@@ -20,7 +20,7 @@ export class YmnMeasureShape extends Konva.Group {
         this.separator = new Konva.Line({
             points: [
                 0, 0,
-                0, ShapeConfig.line.defaultHeight],
+                0, ShapeConfig.staff.defaultHeight],
             stroke: ShapeConfig.measure.stroke,
             strokeWidth: ShapeConfig.measure.strokeWidth
         });

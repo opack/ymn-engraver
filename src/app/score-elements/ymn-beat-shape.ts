@@ -9,7 +9,7 @@ export class YmnBeatShape extends Konva.Group {
         this.separator = new Konva.Line({
             points: [
                 0, 0,
-                0, ShapeConfig.line.defaultHeight],
+                0, ShapeConfig.staff.defaultHeight],
             stroke: ShapeConfig.beat.stroke,
             strokeWidth: ShapeConfig.beat.strokeWidth,
             dash: ShapeConfig.beat.dash

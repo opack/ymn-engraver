@@ -7,7 +7,7 @@ import { YmnChord } from './ymn-chord';
  */
 export class YmnBeatLayout {
     /**
-     * Layout all beats at a given position in the measure across lines
+     * Layout all beats at a given position in the measure across staves
      * @param beats 
      * @param initialOffset 
      * @return the new offset in order to layout next measures right after
@@ -24,7 +24,7 @@ export class YmnBeatLayout {
         let xOffset = 0;
         const chords: Array<YmnChord> = [];
         for (let curChord = 0; curChord < maxNbChords; curChord++) {
-            // Get all chords at that position in the system across measures/lines
+            // Get all chords at that position in the system across measures/staves
             chords.length = 0;
             beats.forEach(beat => {
                 if (curChord < beat.children.length) {

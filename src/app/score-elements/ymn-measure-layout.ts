@@ -7,7 +7,7 @@ import { YmnBeatLayout } from './ymn-beat-layout';
  */
 export class YmnMeasureLayout {
     /**
-     * Layout all measures at a given position across lines
+     * Layout all measures at a given position across staves
      * @param measures 
      * @param initialOffset 
      * @return the new offset in order to layout next measures right after
@@ -29,7 +29,7 @@ export class YmnMeasureLayout {
         
             const beats: Array<YmnBeat> = [];
             for (let curBeat = 0; curBeat < nbBeats; curBeat++) {
-            // Get all beats at that position in the system across measures/lines
+            // Get all beats at that position in the system across measures/staves
             beats.length = 0;
             measures.forEach(measure => {
                 beats.push(measure.children[curBeat]);

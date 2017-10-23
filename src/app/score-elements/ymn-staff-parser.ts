@@ -1,21 +1,21 @@
-import { YmnLine } from './ymn-line';
+import { YmnStaff } from './ymn-staff';
 import { YmnMeasure } from './ymn-measure';
 import { YmnMeasureParser } from './ymn-measure-parser';
 
-export class YmnLineParser {
-  public parse(lineString: string, line: YmnLine): void {
+export class YmnStaffParser {
+  public parse(staffString: string, staff: YmnStaff): void {
     const measureParser = new YmnMeasureParser();
     let previousMeasure: YmnMeasure;
 
-    const measuresString = lineString.split('|');
+    const measuresString = staffString.split('|');
     measuresString.forEach(measureString => {
       const measure = new YmnMeasure();
       
       // Add shape
-      line.shape.add(measure.shape);
+      staff.shape.add(measure.shape);
       
       // Set links
-      measure.parent = line;
+      measure.parent = staff;
       if (previousMeasure !== undefined) {
         previousMeasure.next = measure;
         measure.previous = previousMeasure;
@@ -24,7 +24,7 @@ export class YmnLineParser {
 
       // Parse content
       measureParser.parse(measureString, measure);
-      line.children.push(measure);
+      staff.children.push(measure);
     });
   }
 }

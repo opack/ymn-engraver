@@ -1,35 +1,35 @@
 import { YmnSystem } from './ymn-system';
-import { YmnLine } from './ymn-line';
-import { YmnLineParser } from './ymn-line-parser';
+import { YmnStaff } from './ymn-staff';
+import { YmnStaffParser } from './ymn-staff-parser';
 
 export class YmnSystemParser {
   public parse(systemString: string, system: YmnSystem): void {
-    const lineParser = new YmnLineParser();
-    let previousLine: YmnLine;
-    const linesStrings = systemString.split('\n');
+    const staffParser = new YmnStaffParser();
+    let previousStaff: YmnStaff;
+    const stavesStrings = systemString.split('\n');
 
-    linesStrings.forEach(lineString => {
-      // Do not treat empty lines
-      if (lineString === '') {
+    stavesStrings.forEach(staffString => {
+      // Do not treat empty staves
+      if (staffString === '') {
         return;
       }
       
-      const line = new YmnLine();
+      const staff = new YmnStaff();
 
       // Add shape
-      system.shape.add(line.shape);
+      system.shape.add(staff.shape);
       
       // Set links
-      line.parent = system;
-      if (previousLine !== undefined) {
-        previousLine.next = line;
-        line.previous = previousLine;
+      staff.parent = system;
+      if (previousStaff !== undefined) {
+        previousStaff.next = staff;
+        staff.previous = previousStaff;
       }
-      previousLine = line;
+      previousStaff = staff;
 
       // Parse content
-      lineParser.parse(lineString, line);
-      system.children.push(line);
+      staffParser.parse(staffString, staff);
+      system.children.push(staff);
     });
   }
 }

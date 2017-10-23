@@ -1,6 +1,6 @@
 export const ShapeConfig = {
     score: {
-        width: 1000, //MAX_LINE_WIDTH
+        width: 1000,
         title: {
             fontSize: 18,
             fontFamily: 'Calibri',
@@ -18,13 +18,13 @@ export const ShapeConfig = {
             bottomSpacing: 10
         }
     },
-    line: {
+    staff: {
         defaultHeight: 30,
         stroke: '#999999',
         strokeWidth: 1
     },
     measure: {
-        octaveFontSize: 12, //OCTAVE_FONT_SIZE
+        octaveFontSize: 12,
         octaveWidth: 30,
         stroke: 'black',
         strokeWidth: 1
@@ -35,13 +35,13 @@ export const ShapeConfig = {
         dash: [1, 3]
     },
     chord: {
-        pitchSpacing: 5 //CHORD_PITCH_SPACE
+        pitchSpacing: 5
     },
     note: {
-        size: 30, //NOTE_SIZE
-        width: 15, //PITCH_TEXT_WIDTH
-        height: 12, //PITCH_TEXT_HEIGHT
-        fontSize: 12, //PITCH_FONT_SIZE
+        size: 30,
+        width: 15,
+        height: 12,
+        fontSize: 12,
         fontFamily: 'Calibri'
     }
 };
