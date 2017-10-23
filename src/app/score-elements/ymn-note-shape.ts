@@ -28,7 +28,7 @@ export class YmnNoteShape extends Konva.Group {
   public update(pitch: string) {
     const isContinuationPitch = pitch === '*';
 
-    this.text.text(pitch);
+    this.text.text(isContinuationPitch ? `(${pitch})` : pitch);
     this.text.visible(!isContinuationPitch);
 
     this.circle.visible(isContinuationPitch);
@@ -40,7 +40,12 @@ export class YmnNoteShape extends Konva.Group {
   }
 
   public updateSize() {
-    this.width(this.getClientRect().width);
-    this.height(this.getClientRect().height);
+    // Ensure that a note is at least ShapeConfig.note.width large
+    this.width(Math.max(this.getClientRect().width, ShapeConfig.note.width));
+    // The height of the note must not be less than the height of the text that
+    // can be used to represent a pitch. This is important to ensure that 
+    // continuation circles will not cause the chord notes to be too high,
+    // and thus not aligned with the notes of the rest of the staff
+    this.height(Math.max(this.getClientRect().height, this.text.height()));
   }
 }

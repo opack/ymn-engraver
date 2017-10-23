@@ -42,6 +42,7 @@ export const ShapeConfig = {
     },
     note: {
         width: 15,
+        height: 15,
         text: {
             fontSize: 12,
             fontFamily: 'Calibri'
