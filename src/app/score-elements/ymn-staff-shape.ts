@@ -37,17 +37,6 @@ export class YmnStaffShape extends Konva.Group {
             strokeWidth: ShapeConfig.staff.strokeWidth
         });
         this.add(this.lowerLine);
-
-        this.add(new Konva.Line({
-            points: [
-                0, 30,
-                50, 20,
-                100, 30
-            ],
-            tension: 1,
-            stroke: ShapeConfig.staff.stroke,
-            strokeWidth: ShapeConfig.staff.strokeWidth
-        }));
     }
 
     public setLinesLength(length: number): void {
