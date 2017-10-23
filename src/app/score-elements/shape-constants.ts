@@ -18,6 +18,9 @@ export const ShapeConfig = {
             bottomSpacing: 10
         }
     },
+    system: {
+        bottomSpacing: 15
+    },
     staff: {
         defaultHeight: 30,
         stroke: '#999999',

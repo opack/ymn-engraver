@@ -27,7 +27,7 @@ export class YmnSheetComponent implements OnInit, OnChanges {
       width: 1000,
       height: 800,
       // Offset the stage so that all child objects are shifted of 0.5.
-      // This fixes the "blurry staves" problem.
+      // This fixes the "blurry lines" problem.
       x: 0.5,
       y: 0.5
     });

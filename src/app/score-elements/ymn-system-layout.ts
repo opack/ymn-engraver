@@ -1,6 +1,7 @@
 import { YmnSystem } from './ymn-system';
 import { YmnMeasure } from './ymn-measure';
 import { YmnMeasureLayout } from './ymn-measure-layout';
+import { ShapeConfig } from './shape-constants';
 
 export class YmnSystemLayout {
   public layout(system: YmnSystem, initialOffset: number): number {
@@ -9,7 +10,7 @@ export class YmnSystemLayout {
 
     system.shape.y(initialOffset);
     system.shape.updateSize();
-    return system.shape.y() + system.shape.width();
+    return system.shape.y() + system.shape.height() + ShapeConfig.system.bottomSpacing;
   }
 
   private layoutStaves(system: YmnSystem) {
