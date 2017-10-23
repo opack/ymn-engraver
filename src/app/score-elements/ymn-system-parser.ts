@@ -21,11 +21,15 @@ export class YmnSystemParser {
       
       // Set links
       staff.parent = system;
-      if (previousStaff !== undefined) {
+      /**
+       * TODO : This is wrong : the previous Staff is not the previously parsed
+       * but the staf in the previous system that has the same octave
+       */
+      /*if (previousStaff !== undefined) {
         previousStaff.next = staff;
         staff.previous = previousStaff;
       }
-      previousStaff = staff;
+      previousStaff = staff;*/
 
       // Parse content
       staffParser.parse(staffString, staff);

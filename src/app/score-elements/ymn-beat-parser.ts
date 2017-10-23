@@ -7,6 +7,10 @@ export class YmnBeatParser {
   public parse(beatString: string, beat: YmnBeat): void {
     const chordParser = new YmnChordParser();
     let previousChord: YmnChord;
+    if (beat.previous !== undefined) {
+      previousChord = beat.previous.children[beat.previous.children.length - 1];
+    }
+
     const chordsString = beatString.split(' ');
     chordsString.forEach(chordString => {
       const chord = new YmnChord();

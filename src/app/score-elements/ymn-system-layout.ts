@@ -24,6 +24,8 @@ export class YmnSystemLayout {
     // Layout all staves in this system
     let yOffset = 0;
     system.children.forEach(staff => {
+      staff.searchLongNotes();
+
       staff.shape.y(yOffset);
       staff.shape.updateHeight();
 

@@ -7,5 +7,6 @@ export class YmnNote {
   public parent: YmnChord;
 
   public pitch: string;
+  public isContinuationNote: boolean;
   public shape: YmnNoteShape = new YmnNoteShape();
 }

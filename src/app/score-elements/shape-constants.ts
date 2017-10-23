@@ -24,7 +24,11 @@ export const ShapeConfig = {
     staff: {
         defaultHeight: 30,
         stroke: '#999999',
-        strokeWidth: 1
+        strokeWidth: 1,
+        continuationNotesLine: {
+            stroke: 'black',
+            strokeWidth: 1,
+        }
     },
     measure: {
         octaveFontSize: 12,

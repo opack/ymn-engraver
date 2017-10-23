@@ -13,6 +13,10 @@ export class YmnMeasureParser {
       measure.shape.update(measure.octave);
     } else {
       let previousBeat: YmnBeat;
+      if (measure.previous !== undefined) {
+        previousBeat = measure.previous.children[measure.previous.children.length - 1];
+      }
+
       const beatsString = measureString.split(':');
 
       beatsString.forEach(beatString => {

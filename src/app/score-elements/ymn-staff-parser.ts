@@ -6,6 +6,9 @@ export class YmnStaffParser {
   public parse(staffString: string, staff: YmnStaff): void {
     const measureParser = new YmnMeasureParser();
     let previousMeasure: YmnMeasure;
+    if (staff.previous !== undefined) {
+      previousMeasure = staff.previous.children[staff.previous.children.length - 1];
+    }
 
     const measuresString = staffString.split('|');
     measuresString.forEach(measureString => {
