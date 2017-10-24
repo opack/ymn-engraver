@@ -1,8 +1,8 @@
 import { YmnSystem } from './ymn-system';
 import { YmnStaffShape } from './ymn-staff-shape';
 import { YmnMeasure } from './ymn-measure';
-import { YmnNoteShape } from './ymn-note-shape';
 import { YmnChord } from './ymn-chord';
+import { YmnLongNote } from './ymn-long-note';
 
 export class YmnStaff {
   public previous: YmnStaff;
@@ -18,7 +18,7 @@ export class YmnStaff {
   /**
    * Search for notes that last more than a beat and the note they last to
    */
-  public searchLongNotes(): void {
+  public searchLongNotes(): Array<YmnLongNote> {
     // If not more than 1 measure, then there are no notes because the first
     // measure is the octave measure
     if (this.children.length < 2) {
@@ -29,7 +29,7 @@ export class YmnStaff {
     const firstBeat = firstMeasureWithBeats.children[0];
     const firstChord = firstBeat.children[0];
 
-    const longNotesList: Array<{firstNoteShape: YmnNoteShape, lastNoteShape: YmnNoteShape}> = [];
+    const longNotesList: Array<YmnLongNote> = [];
     
     let longChord: YmnChord;
     let curChord = firstChord;
@@ -45,6 +45,7 @@ export class YmnStaff {
           // Here curChord.children[0] is a note which has no next or has a next that is not
           // a continuation note. Thus, it is the last continuation chord for longChord.
           longNotesList.push({
+            staffShape: this.shape,
             firstNoteShape: longChord.children[0].shape,
             lastNoteShape: curChord.children[0].shape
           });
@@ -55,7 +56,7 @@ export class YmnStaff {
       curChord = curChord.next;
     }
     while (curChord !== undefined);
-
-    this.shape.drawContinuationLines(longNotesList);
+    return longNotesList;
+    //TODO delete this.shape.drawContinuationLines(longNotesList);
   }
 }

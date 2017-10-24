@@ -6,7 +6,6 @@ export class YmnStaffShape extends Konva.Group {
     public leftLine: Konva.Line;
     public upperLine: Konva.Line;
     public lowerLine: Konva.Line;
-    public continuationLines: Array<Konva.Line> = [];
 
     constructor() {
         super();
@@ -56,24 +55,5 @@ export class YmnStaffShape extends Konva.Group {
 
     public updateWidth() {
         this.width(this.getClientRect().width);
-    }
-
-    public drawContinuationLines(longNotesList: Array<{firstNoteShape: YmnNoteShape, lastNoteShape: YmnNoteShape}>): void {
-        this.continuationLines.length = 0;
-        const staffPosition = this.getAbsolutePosition();
-        longNotesList.forEach(longNote => {
-            const firstNotePosition = longNote.firstNoteShape.getAbsolutePosition();
-            const lastNotePosition = longNote.lastNoteShape.getAbsolutePosition();
-
-            this.add(new Konva.Line({
-                points: [
-                    firstNotePosition.x - staffPosition.x + longNote.firstNoteShape.width() - ShapeConfig.staff.continuationNotesLine.firstNoteInnerMargin, firstNotePosition.y - staffPosition.y + longNote.firstNoteShape.height() / 2,
-                    lastNotePosition.x - staffPosition.x + longNote.lastNoteShape.width() / 2, lastNotePosition.y - staffPosition.y + longNote.lastNoteShape.height() / 2
-                ],
-                stroke: ShapeConfig.staff.continuationNotesLine.stroke,
-                strokeWidth: ShapeConfig.staff.continuationNotesLine.strokeWidth,
-                dash: ShapeConfig.staff.continuationNotesLine.dash
-            }));
-        });
     }
 }

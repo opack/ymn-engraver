@@ -1,4 +1,7 @@
 export const ShapeConfig = {
+    stage: {
+        yOffset: 0.5
+    },
     score: {
         width: 1000,
         title: {
@@ -23,9 +26,10 @@ export const ShapeConfig = {
     },
     staff: {
         defaultHeight: 30,
-        stroke: '#999999',
+        stroke: '#cccccc',
         strokeWidth: 1,
         continuationNotesLine: {
+            curveHeight: 15,
             firstNoteInnerMargin: 3,
             stroke: 'black',
             strokeWidth: 1,

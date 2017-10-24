@@ -1,6 +1,7 @@
 import { YmnScore } from './ymn-score';
 import { YmnSystemLayout } from './ymn-system-layout';
 import { ShapeConfig } from './shape-constants';
+import { YmnLongNote } from './ymn-long-note';
 
 /**
  * Ensures that the children in one score are correcly laid out one to another
@@ -26,5 +27,16 @@ export class YmnScoreLayout {
             const systemLayout = new YmnSystemLayout();
             yOffset = systemLayout.layout(system, yOffset);
         });
+
+        // Search long notes to draw continuation lines
+        const longNotes: Array<YmnLongNote> = [];
+        score.children.forEach(system => {
+            system.children.forEach(staff => {
+                staff.searchLongNotes().forEach(longNote => {
+                    longNotes.push(longNote);
+                })
+            });
+        });
+        score.shape.drawContinuationLines(longNotes);
     }
 }

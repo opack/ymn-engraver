@@ -24,15 +24,13 @@ export class YmnSystemLayout {
     // Layout all staves in this system
     let yOffset = 0;
     system.children.forEach(staff => {
-      staff.searchLongNotes();
-
       staff.shape.y(yOffset);
       staff.shape.updateHeight();
 
       staff.shape.setLinesLength(staffLength);
 
       staff.shape.lowerLine.visible(staff.next === undefined);
-      staff.shape.lowerLine.y(staff.shape.height() - staff.shape.lowerLine.height());
+      staff.shape.lowerLine.y(staff.shape.height() - staff.shape.lowerLine.height());      
 
       yOffset += staff.shape.height();
     });
