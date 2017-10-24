@@ -27,9 +27,11 @@ export class YmnNoteShape extends Konva.Group {
 
   public update(pitch: string) {
     const isContinuationPitch = pitch === '*';
-
-    this.text.text(isContinuationPitch ? `(${pitch})` : pitch);
-    this.text.visible(!isContinuationPitch);
+    
+    this.text.text(isContinuationPitch ? ' ' : pitch);
+    // Cannot hide the text withou changing the getClientRect().width of the note :(
+    // which will cause the beat to have a wrong width
+    //this.text.visible(!isContinuationPitch);
 
     this.circle.visible(isContinuationPitch);
     // Center the circle on the text

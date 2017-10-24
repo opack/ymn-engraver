@@ -28,6 +28,7 @@ export const ShapeConfig = {
         continuationNotesLine: {
             stroke: 'black',
             strokeWidth: 1,
+            dash: [1, 0]
         }
     },
     measure: {
@@ -39,13 +40,13 @@ export const ShapeConfig = {
     beat: {
         stroke: 'black',
         strokeWidth: 1,
-        dash: [1, 3]
+        dash: [4, 4]
     },
     chord: {
         pitchSpacing: 5
     },
     note: {
-        width: 15,
+        width: 20,
         height: 15,
         text: {
             fontSize: 12,

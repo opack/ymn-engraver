@@ -28,8 +28,6 @@ Before running the tests make sure you are serving the app via `ng serve`.
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 # TODO
-* Bugfix
-  * If only a continuation note, then the minimum width is not respected. Try with {T1|2:*:*:*|*:*::|:::|:::|:::} to see it
 * New features
  * Draws arcs between first and last notes of long lasting pitches (https://konvajs.github.io/docs/sandbox/Modify_Curves_with_Anchor_Points.html)
  * Ability to directly update only modified parts of the score and layout impacted parts
