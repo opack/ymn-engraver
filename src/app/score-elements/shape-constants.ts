@@ -26,6 +26,7 @@ export const ShapeConfig = {
         stroke: '#999999',
         strokeWidth: 1,
         continuationNotesLine: {
+            firstNoteInnerMargin: 3,
             stroke: 'black',
             strokeWidth: 1,
             dash: [1, 0]

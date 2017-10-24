@@ -67,11 +67,12 @@ export class YmnStaffShape extends Konva.Group {
 
             this.add(new Konva.Line({
                 points: [
-                    firstNotePosition.x - staffPosition.x + longNote.firstNoteShape.width(), firstNotePosition.y - staffPosition.y + longNote.firstNoteShape.height() / 2,
+                    firstNotePosition.x - staffPosition.x + longNote.firstNoteShape.width() - ShapeConfig.staff.continuationNotesLine.firstNodeInnerMargin, firstNotePosition.y - staffPosition.y + longNote.firstNoteShape.height() / 2,
                     lastNotePosition.x - staffPosition.x + longNote.lastNoteShape.width() / 2, lastNotePosition.y - staffPosition.y + longNote.lastNoteShape.height() / 2
                 ],
                 stroke: ShapeConfig.staff.continuationNotesLine.stroke,
-                strokeWidth: ShapeConfig.staff.continuationNotesLine.strokeWidth
+                strokeWidth: ShapeConfig.staff.continuationNotesLine.strokeWidth,
+                dash: ShapeConfig.staff.continuationNotesLine.dash
             }));
         });
     }
