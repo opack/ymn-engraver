@@ -1,5 +1,24 @@
 # YmnEngraver
 
+# Roadmap
+* New features
+    * Save / load to text file (buttons on the bottom of the left column)
+    * Save to png (or pdf) (button on the bottom of the right column)
+    * Make continuation line continue after the last chord of the system if applicable, and start before the first chord of the next system
+    * Ability to directly update only modified parts of the score and layout impacted parts
+    * Add/remove parts from groups instead of using visible in order to improve performance
+    * Add zoom (https://konvajs.github.io/docs/sandbox/Zooming_Relative_To_Pointer.html) and pan
+    * Add ability to edit notes (https://konvajs.github.io/docs/sandbox/Editable_Text.html)
+    * Add drag and drop notes (https://konvajs.github.io/docs/sandbox/Drag_and_Drop_Multiple_Shapes.html)
+    * Add copy and paste notes
+    * Add tooltip over note to show pitch in english or french music notation
+    * Plugin system to validate and load various formats
+        * Load from MusicXML
+* Refactorings
+    * 
+
+# Developing
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.3.2.
 
 ## Development server
@@ -26,19 +45,3 @@ Before running the tests make sure you are serving the app via `ng serve`.
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-
-# TODO
-* New features
-    * Style differently the line splitting the system in half
-    * Make continuation line continue after the last chord of the system if applicable, and start before the first chord of the next system
-    * Ability to directly update only modified parts of the score and layout impacted parts
-    * Add/remove parts from groups instead of using visible in order to improve performance
-    * Add zoom (https://konvajs.github.io/docs/sandbox/Zooming_Relative_To_Pointer.html) and pan
-    * Add ability to edit notes (https://konvajs.github.io/docs/sandbox/Editable_Text.html)
-    * Add drag and drop notes (https://konvajs.github.io/docs/sandbox/Drag_and_Drop_Multiple_Shapes.html)
-    * Add copy and paste notes
-    * Add tooltip over note to show pitch in english or french music notation
-    * Plugin system to validate and load various formats
-        * Load from MusicXML
-* Refactorings
-    * 
