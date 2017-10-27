@@ -29,15 +29,16 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 # TODO
 * New features
- * Draws arcs between first and last notes of long lasting pitches (https://konvajs.github.io/docs/sandbox/Modify_Curves_with_Anchor_Points.html)
- * Ability to directly update only modified parts of the score and layout impacted parts
- * Add/remove parts from groups instead of using visible in order to improve performance
- * Add zoom (https://konvajs.github.io/docs/sandbox/Zooming_Relative_To_Pointer.html) and pan
- * Add ability to edit notes (https://konvajs.github.io/docs/sandbox/Editable_Text.html)
- * Add drag and drop notes (https://konvajs.github.io/docs/sandbox/Drag_and_Drop_Multiple_Shapes.html)
- * Add copy and paste notes
- * Add tooltip over note to show pitch in english or french music notation
- * Plugin system to validate and load various formats
-  * Load from MusicXML
+    * Style differently the line splitting the system in half
+    * Make continuation line continue after the last chord of the system if applicable, and start before the first chord of the next system
+    * Ability to directly update only modified parts of the score and layout impacted parts
+    * Add/remove parts from groups instead of using visible in order to improve performance
+    * Add zoom (https://konvajs.github.io/docs/sandbox/Zooming_Relative_To_Pointer.html) and pan
+    * Add ability to edit notes (https://konvajs.github.io/docs/sandbox/Editable_Text.html)
+    * Add drag and drop notes (https://konvajs.github.io/docs/sandbox/Drag_and_Drop_Multiple_Shapes.html)
+    * Add copy and paste notes
+    * Add tooltip over note to show pitch in english or french music notation
+    * Plugin system to validate and load various formats
+        * Load from MusicXML
 * Refactorings
- * 
+    * 
