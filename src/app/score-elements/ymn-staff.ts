@@ -12,8 +12,7 @@ export class YmnStaff {
   public children: Array<YmnMeasure> = [];
   public shape: YmnStaffShape = new YmnStaffShape();
 
-  public measureCount = 0;
-  public beatCount = 0;
+  public hasSystemSeparator = false;
 
   /**
    * Search for notes that last more than a beat and the note they last to
@@ -30,7 +29,7 @@ export class YmnStaff {
     const firstChord = firstBeat.children[0];
 
     const longNotesList: Array<YmnLongNote> = [];
-    
+
     let longChord: YmnChord;
     let curChord = firstChord;
     do {
@@ -57,6 +56,5 @@ export class YmnStaff {
     }
     while (curChord !== undefined);
     return longNotesList;
-    //TODO delete this.shape.drawContinuationLines(longNotesList);
   }
 }

@@ -1,6 +1,7 @@
 import { YmnSystem } from './ymn-system';
 import { YmnMeasure } from './ymn-measure';
 import { YmnMeasureLayout } from './ymn-measure-layout';
+import { YmnStaffLayout } from './ymn-staff-layout';
 import { ShapeConfig } from './shape-constants';
 
 export class YmnSystemLayout {
@@ -14,25 +15,10 @@ export class YmnSystemLayout {
   }
 
   private layoutStaves(system: YmnSystem) {
-    // Assumes each staff's last measure ends at the same position,
-    // which should be correct because layoutMeasures() made sure
-    // that all measures are the same size
-    const measuresOfFirstStaff = system.children[0].children;
-    const lastMeasure = measuresOfFirstStaff[measuresOfFirstStaff.length - 1];
-    const staffLength = lastMeasure.shape.x() + lastMeasure.shape.width();
-
-    // Layout all staves in this system
     let yOffset = 0;
     system.children.forEach(staff => {
-      staff.shape.y(yOffset);
-      staff.shape.updateHeight();
-
-      staff.shape.setLinesLength(staffLength);
-
-      staff.shape.lowerLine.visible(staff.next === undefined);
-      staff.shape.lowerLine.y(staff.shape.height() - staff.shape.lowerLine.height());      
-
-      yOffset += staff.shape.height();
+      const staffLayout = new YmnStaffLayout();
+      yOffset = staffLayout.layout(staff, yOffset);
     });
   }
 

@@ -15,7 +15,7 @@
     * Plugin system to validate and load various formats
         * Load from MusicXML
 * Refactorings
-    * 
+    * Change layout() methods to static methods
 
 # Developing
 

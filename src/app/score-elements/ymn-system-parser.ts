@@ -11,25 +11,32 @@ export class YmnSystemParser {
     stavesStrings.forEach(staffString => {
       // Do not treat empty staves
       if (staffString === '') {
-        return;
+        return true;
       }
-      
+
+      // If it is a system separator, then note the last staff of the first part
+      if (staffString.startsWith('-')
+      && previousStaff !== undefined) {
+        previousStaff.hasSystemSeparator = true;
+        return true;
+      }
+
       const staff = new YmnStaff();
 
       // Add shape
       system.shape.add(staff.shape);
-      
+
       // Set links
       staff.parent = system;
       /**
        * TODO : This is wrong : the previous Staff is not the previously parsed
        * but the staf in the previous system that has the same octave
        */
-      /*if (previousStaff !== undefined) {
+      if (previousStaff !== undefined) {
         previousStaff.next = staff;
         staff.previous = previousStaff;
       }
-      previousStaff = staff;*/
+      previousStaff = staff;
 
       // Parse content
       staffParser.parse(staffString, staff);
