@@ -31,7 +31,8 @@ export class YmnSheetComponent implements OnInit, OnChanges {
       height: 800,
       // Offset the stage so that all child objects are shifted of 0.5.
       // This fixes the "blurry lines" problem.
-      y: ShapeConfig.stage.yOffset
+      x: ShapeConfig.stage.offset.x,
+      y: ShapeConfig.stage.offset.y
     });
 
     this.continuationLinesLayer = new Konva.Layer({
@@ -45,14 +46,14 @@ export class YmnSheetComponent implements OnInit, OnChanges {
       return;
     }
     this.clearStage();
-    
+
     const score = new YmnScore(this.title, this.author, this.tempo);
     this.score = score;
     score.parse(this.music);
 
     this.stage.clear();
     this.stage.add(score.shape);
-    
+
     score.layout();
     this.stage.draw();
   }

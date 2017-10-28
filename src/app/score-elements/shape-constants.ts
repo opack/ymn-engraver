@@ -1,6 +1,9 @@
 export const ShapeConfig = {
   stage: {
-    yOffset: 0.5
+    offset: {
+      x: 0.5,
+      y: 0.5
+    }
   },
   score: {
     width: 1000,

@@ -82,8 +82,8 @@ export class YmnScoreShape extends Konva.Layer {
 
     this.add(new Konva.Line({
       points: [
-        fromPosition.x /*- staffPosition.x*/ + from.width() - ShapeConfig.staff.continuationNotesLine.firstNoteInnerMargin, fromPosition.y /*- staffPosition.y*/ + to.height() / 2 - ShapeConfig.stage.yOffset,
-        toPosition.x /*- staffPosition.x*/ + to.width() / 2, toPosition.y /*- staffPosition.y*/ + to.height() / 2 - ShapeConfig.stage.yOffset
+        fromPosition.x /*- staffPosition.x*/ + from.width() - ShapeConfig.staff.continuationNotesLine.firstNoteInnerMargin + ShapeConfig.stage.offset.x, fromPosition.y /*- staffPosition.y*/ + to.height() / 2 + ShapeConfig.stage.offset.y,
+        toPosition.x /*- staffPosition.x*/ + to.width() / 2 + ShapeConfig.stage.offset.x, toPosition.y /*- staffPosition.y*/ + to.height() / 2 + ShapeConfig.stage.offset.y
       ],
       stroke: ShapeConfig.staff.continuationNotesLine.stroke,
       strokeWidth: ShapeConfig.staff.continuationNotesLine.strokeWidth,
