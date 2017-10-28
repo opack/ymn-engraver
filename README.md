@@ -2,8 +2,8 @@
 
 # Roadmap
 * New features
-    * Save / load to text file (buttons on the bottom of the left column)
-    * Save to png (or pdf) (button on the bottom of the right column)
+    * Load from text file (buttons on the bottom of the left column) https://github.com/eligrey/FileSaver.js
+    * Save to png (or pdf) (button on the bottom of the right column) https://github.com/eligrey/FileSaver.js
     * Make continuation line continue after the last chord of the system if applicable, and start before the first chord of the next system
     * Ability to directly update only modified parts of the score and layout impacted parts
     * Add/remove parts from groups instead of using visible in order to improve performance

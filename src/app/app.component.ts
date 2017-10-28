@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,20 @@ B2|7 ::3 10: 10\n\
 }';
   public musicToEngrave: string;
 
-  private engrave(): void {
+  public engrave(): void {
     this.musicToEngrave = this.score;
+  }
+
+  public save(): void {
+    const data = {
+      title: this.title,
+      author: this.author,
+      tempo: this.tempo,
+      score: this.score
+    };
+    const blob = new Blob([JSON.stringify(data)], {
+      type: "text/plain;charset=utf-8"
+    });
+    FileSaver.saveAs(blob, `${this.title}.json`);
   }
 }
