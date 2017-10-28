@@ -35,6 +35,7 @@ export const ShapeConfig = {
       strokeWidth: 3
     },
     continuationNotesLine: {
+      isCurvy: true,
       curveHeight: 15,
       firstNoteInnerMargin: 3,
       stroke: 'black',

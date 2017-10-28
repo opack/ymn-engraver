@@ -62,10 +62,15 @@ export class YmnScoreShape extends Konva.Layer {
   }
 
   public drawContinuationLines(longNotesList: Array<YmnLongNote>): void {
-    longNotesList.forEach(longNote => {
-      //this.drawStraightLine(longNote.staffShape, longNote.firstNoteShape, longNote.lastNoteShape);
-      this.drawQuadraticLine(longNote.firstNoteShape, longNote.lastNoteShape);
-    });
+    if (ShapeConfig.staff.continuationNotesLine.isCurvy) {
+      longNotesList.forEach(longNote => {
+        this.drawQuadraticLine(longNote.firstNoteShape, longNote.lastNoteShape);
+      });
+    } else {
+      longNotesList.forEach(longNote => {
+        this.drawStraightLine(longNote.staffShape, longNote.firstNoteShape, longNote.lastNoteShape);
+      });
+    }
     // Ensure that continuation lines will be drawn on top of everything else
     this.continuationLines.setZIndex(100);
   }
