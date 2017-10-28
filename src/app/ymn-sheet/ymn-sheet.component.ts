@@ -26,7 +26,7 @@ export class YmnSheetComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.stage = new Konva.Stage({
-      container: 'container',   // id of container <div>
+      container: 'ymn-sheet-canvas',   // id of container <div>
       width: 1000,
       height: 800,
       // Offset the stage so that all child objects are shifted of 0.5.
@@ -62,7 +62,22 @@ export class YmnSheetComponent implements OnInit, OnChanges {
     if (this.score !== undefined) {
       this.score.shape.remove();
     }
-    this.continuationLinesLayer.destroyChildren();
+    if (this.continuationLinesLayer !== undefined) {
+      this.continuationLinesLayer.destroyChildren();
+    }
   }
 
+  public downloadImage(): void {
+    var dataURL = this.stage.toDataURL({callback: function(){}});
+    this.downloadURI(dataURL, `${this.title}.png`);
+  }
+
+  private downloadURI(uri, name) {
+      const link = document.createElement("a");
+      link.download = name;
+      link.href = uri;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  }
 }
