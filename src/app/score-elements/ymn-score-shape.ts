@@ -62,28 +62,36 @@ export class YmnScoreShape extends Konva.Layer {
   }
 
   public drawContinuationLines(longNotesList: Array<YmnLongNote>): void {
-    if (ShapeConfig.staff.continuationNotesLine.isCurvy) {
-      longNotesList.forEach(longNote => {
-        this.drawQuadraticLine(longNote.firstNoteShape, longNote.lastNoteShape);
-      });
-    } else {
-      longNotesList.forEach(longNote => {
-        this.drawStraightLine(longNote.staffShape, longNote.firstNoteShape, longNote.lastNoteShape);
-      });
-    }
+    longNotesList.forEach(longNote => {
+      const fromPosition = longNote.firstNoteShape.getAbsolutePosition();
+      const toPosition =  longNote.lastNoteShape.circle.getAbsolutePosition();
+
+      const from = {
+        // Start the line at the right of the note
+        x: fromPosition.x + longNote.firstNoteShape.width() - ShapeConfig.staff.continuationNotesLine.firstNoteInnerMargin - ShapeConfig.stage.offset.x,
+        y: toPosition.y - ShapeConfig.stage.offset.y
+      };
+      const to = {
+        // "to" is a circle, and thus its position is its center
+        x: toPosition.x - ShapeConfig.stage.offset.x,
+        y: toPosition.y - ShapeConfig.stage.offset.y
+      };
+
+      if (ShapeConfig.staff.continuationNotesLine.isCurvy) {
+        this.drawQuadraticLine(from, to);
+      } else {
+        this.drawStraightLine(from, to);
+      }
+    });
     // Ensure that continuation lines will be drawn on top of everything else
     this.continuationLines.setZIndex(100);
   }
 
-  private drawStraightLine(staff: Konva.Node, from: Konva.Node, to: Konva.Node) {
-    //const staffPosition = staff.getAbsolutePosition(); // Only needed if the lines go back to the staff as their position would then not be absolute
-    const fromPosition = from.getAbsolutePosition();
-    const toPosition =  to.getAbsolutePosition();
-
+  private drawStraightLine(from: Konva.Vector2d, to: Konva.Vector2d) {
     this.add(new Konva.Line({
       points: [
-        fromPosition.x /*- staffPosition.x*/ + from.width() - ShapeConfig.staff.continuationNotesLine.firstNoteInnerMargin + ShapeConfig.stage.offset.x, fromPosition.y /*- staffPosition.y*/ + to.height() / 2 + ShapeConfig.stage.offset.y,
-        toPosition.x /*- staffPosition.x*/ + to.width() / 2 + ShapeConfig.stage.offset.x, toPosition.y /*- staffPosition.y*/ + to.height() / 2 + ShapeConfig.stage.offset.y
+        from.x, from.y,
+        to.x, to.y
       ],
       stroke: ShapeConfig.staff.continuationNotesLine.stroke,
       strokeWidth: ShapeConfig.staff.continuationNotesLine.strokeWidth,
@@ -91,26 +99,10 @@ export class YmnScoreShape extends Konva.Layer {
     }));
   }
 
-  private drawQuadraticLine(from: Konva.Node, to: Konva.Node) {
-    const fromPosition = from.getAbsolutePosition();
-    const toPosition =  to.getAbsolutePosition();
-    const quad = {
-      start: {
-        x: fromPosition.x + from.width() - ShapeConfig.staff.continuationNotesLine.firstNoteInnerMargin,
-        y: fromPosition.y + from.height() / 2
-      },
-      control: {
-        // Control will be defined just after start and end have been defined for more clarity
-        x: 0,
-        y: 0
-      },
-      end: {
-        x: toPosition.x +  to.width() / 2,
-        y: toPosition.y +  to.height() / 2}
-    };
-    quad.control = {
-      x: (quad.end.x + quad.start.x) / 2,
-      y: quad.start.y - ShapeConfig.staff.continuationNotesLine.curveHeight
+  private drawQuadraticLine(from: Konva.Vector2d, to: Konva.Vector2d) {
+    const control = {
+      x: (to.x + from.x) / 2,
+      y: from.y - ShapeConfig.staff.continuationNotesLine.curveHeight
     };
 
     const continuationLine = new Konva.Shape({
@@ -119,8 +111,8 @@ export class YmnScoreShape extends Konva.Layer {
       lineCap: 'round',
       sceneFunc: function(context) {
         context.beginPath();
-        context.moveTo(quad.start.x, quad.start.y);
-        context.quadraticCurveTo(quad.control.x, quad.control.y, quad.end.x, quad.end.y);
+        context.moveTo(from.x, from.y);
+        context.quadraticCurveTo(control.x, control.y, to.x, to.y);
         context.strokeShape(this);
       }
     });
