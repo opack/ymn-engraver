@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { YmnScore } from '../score-elements/ymn-score';
 import { ShapeConfig } from '../score-elements/shape-constants';
 import * as Konva from 'konva';
@@ -9,15 +9,7 @@ import { FileUtils } from '../../utils/file-utils';
   templateUrl: './ymn-sheet.component.html',
   styleUrls: ['./ymn-sheet.component.css']
 })
-export class YmnSheetComponent implements OnInit, OnChanges {
-  @Input()
-  public music: string;
-  @Input()
-  public author: string;
-  @Input()
-  public title: string;
-  @Input()
-  public tempo: number;
+export class YmnSheetComponent implements OnInit {
   private stage: Konva.Stage;
   private score: YmnScore;
   private continuationLinesLayer: Konva.Layer;
@@ -42,27 +34,6 @@ export class YmnSheetComponent implements OnInit, OnChanges {
     this.stage.add(this.continuationLinesLayer);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.buildScore();
-  }
-
-  private buildScore(): void {
-    this.clearStage();
-    if (this.music === undefined) {
-      return;
-    }
-
-    const score = new YmnScore(this.title, this.author, this.tempo);
-    this.score = score;
-    score.parse(this.music);
-
-    this.stage.clear();
-    this.stage.add(score.shape);
-
-    score.layout();
-    this.stage.draw();
-  }
-
   private clearStage(): void {
     if (this.score !== undefined) {
       this.score.shape.remove();
@@ -72,12 +43,25 @@ export class YmnSheetComponent implements OnInit, OnChanges {
     }
   }
 
-  public engrave(music: string) {
-    this.music = music;
+  public engrave(title: string, author: string, tempo: number, music: string) {
+    this.clearStage();
+    if (music === undefined) {
+      return;
+    }
+
+    const score = new YmnScore(title, author, tempo);
+    this.score = score;
+    score.parse(music);
+
+    this.stage.clear();
+    this.stage.add(score.shape);
+
+    score.layout();
+    this.stage.draw();
   }
 
   public downloadImage(): void {
     var dataURL = this.stage.toDataURL({callback: function(){}});
-    FileUtils.downloadURI(dataURL, `${this.title}.png`);
+    FileUtils.downloadURI(dataURL, `${this.score.title}.png`);
   }
 }

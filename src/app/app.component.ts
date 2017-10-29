@@ -18,7 +18,7 @@ export class AppComponent {
 
 
   public engrave(): void {
-    this.ymnSheet.engrave(this.score);
+    this.ymnSheet.engrave(this.title, this.author, this.tempo, this.score);
   }
 
   public clear() {
