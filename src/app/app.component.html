@@ -15,11 +15,13 @@
                     <input class="form-control" type="text" id="scoreTempo" name="scoreTempo" placeholder="48" [(ngModel)]="tempo">
                 </div>
                 <div class="form-group">
-                    <label for="scoreNotes">Notes :</label>
+                    <label for="scoreNotes">Score :</label>
                     <textarea class="form-control score-input" id="scoreNotes" name="scoreNotes" rows="30" [(ngModel)]="score"></textarea>
                 </div>
                 <button (click)="engrave()">Engrave !</button>
                 <button (click)="save()">Save</button>
+                <button (click)="triggerFileSelect($event, fileSelector)">Load</button>
+                <input type="file" #fileSelector (change)="load($event)" style="display:none" accept="text/json">
             </form>
         </div>
         <div class="col">

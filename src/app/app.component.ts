@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import * as FileSaver from 'file-saver';
+import { FileUtils } from '../utils/file-utils';
+import { StringUtils } from '../utils/string-utils';
 
 @Component({
   selector: 'app-root',
@@ -10,22 +12,7 @@ export class AppComponent {
   public title;
   public author;
   public tempo;
-  public score = '{\n\
-T1|:::|:::|:::|:::|:::\n\
-0|10:2:7+3:x+* 10|9+5::2:5|2:*:*:*|*:*:*:*|10:2:7+3:*+* *+10\n\
-B1|:::|:12:10:|10:*:*:*|*:*:*:*|::9:*\n\
--\n\
-B1| 2:10::7|:9: 5:10 5|:5 7:*:* 3|:5 7::| 2:10+7 2::10+7\n\
-B2|7 ::3 10:|5 12::10 :|3 10:::|3 10::10:*|7 ::3 10: 10\n\
-}\n\
-{\n\
-T1|:::\n\
-0|10:2:7+3:*+* *+10\n\
-B1|::9:*\n\
--\n\
-B1| 2:10+7 2::10+7\n\
-B2|7 ::3 10: 10\n\
-}';
+  public score;
   public musicToEngrave: string;
 
   public engrave(): void {
@@ -35,13 +22,50 @@ B2|7 ::3 10: 10\n\
   public save(): void {
     const data = {
       title: this.title,
-      author: this.author,
-      tempo: this.tempo,
-      score: this.score
+      author: StringUtils.emptyIfUndefined(this.author),
+      tempo: StringUtils.emptyIfUndefined(this.tempo),
+      score: StringUtils.emptyIfUndefined(this.score)
     };
     const blob = new Blob([JSON.stringify(data)], {
       type: "text/plain;charset=utf-8"
     });
-    FileSaver.saveAs(blob, `${this.title}.json`);
+    FileSaver.saveAs(blob, `${StringUtils.valueOrDefault(this.title, 'untitled')}.json`);
+  }
+
+  /**
+   * Triggers the click on the (ugly) hidden input that allows the user to select a file
+   * @param event
+   * @param fileSelector
+   */
+  public triggerFileSelect(event, fileSelector) {
+    fileSelector.click();
+    event.preventDefault();
+  }
+
+  /**
+   * Reads the selected file and then call updateData() with its content
+   * @param event
+   */
+  private load(event): void {
+    FileUtils.readTextFile(event, text => this.updateData(text));
+
+    // Clear the input in order to be able to load the same file again later
+    event.srcElement.value = '';
+  }
+
+  /**
+   * Receives the read data from the file to load and update the state
+   * of the application
+   * @param text
+   */
+  private updateData(text: string) {
+    const data = JSON.parse(text);
+
+    this.title = data.title;
+    this.author = data.author;
+    this.tempo = data.tempo;
+    this.score = data.score;
+
+    this.engrave();
   }
 }

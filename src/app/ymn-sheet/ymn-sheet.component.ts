@@ -2,6 +2,7 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/cor
 import { YmnScore } from '../score-elements/ymn-score';
 import { ShapeConfig } from '../score-elements/shape-constants';
 import * as Konva from 'konva';
+import { FileUtils } from '../../utils/file-utils';
 
 @Component({
   selector: 'ymn-sheet',
@@ -69,15 +70,6 @@ export class YmnSheetComponent implements OnInit, OnChanges {
 
   public downloadImage(): void {
     var dataURL = this.stage.toDataURL({callback: function(){}});
-    this.downloadURI(dataURL, `${this.title}.png`);
-  }
-
-  private downloadURI(uri, name) {
-      const link = document.createElement("a");
-      link.download = name;
-      link.href = uri;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    FileUtils.downloadURI(dataURL, `${this.title}.png`);
   }
 }

@@ -2,8 +2,9 @@
 
 # Roadmap
 * New features
-    * Load from text file (buttons on the bottom of the left column) https://github.com/eligrey/FileSaver.js
-    * Create a toolbar with all action buttons
+  * Create a toolbar with all action buttons
+  * Validate score input
+  * Score edition
     * Make continuation line continue after the last chord of the system if applicable, and start before the first chord of the next system
     * Ability to directly update only modified parts of the score and layout impacted parts
     * Add/remove parts from groups instead of using visible in order to improve performance
@@ -12,10 +13,12 @@
     * Add drag and drop notes (https://konvajs.github.io/docs/sandbox/Drag_and_Drop_Multiple_Shapes.html)
     * Add copy and paste notes
     * Add tooltip over note to show pitch in english or french music notation
-    * Plugin system to validate and load various formats
-        * Load from MusicXML
+  * Plugin system to validate and load various formats
+    * Load from MusicXML
 * Refactorings
-    * Change layout() methods to static methods
+  * Change layout() methods to static methods
+* Bugfixes
+  * Draw the beat bar only if it is not the last of its measure.
 
 # Developing
 
