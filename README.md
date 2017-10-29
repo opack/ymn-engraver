@@ -34,6 +34,7 @@
     * Load from MusicXML
 * Refactorings
   * Change layout() methods to static methods
+  * Use FireBase to store and load files for the user (who has to be authenticated)
 * Bugfixes
   * Draw continuation lines not only for the first chord note
   * Draw the beat bar only if it is not the last of its measure.
