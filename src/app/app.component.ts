@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import * as FileSaver from 'file-saver';
 import { FileUtils } from '../utils/file-utils';
 import { StringUtils } from '../utils/string-utils';
+import { YmnSheetComponent } from './ymn-sheet/ymn-sheet.component';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +14,15 @@ export class AppComponent {
   public author;
   public tempo;
   public score;
-  public musicToEngrave: string;
+  @ViewChild('ymnSheet') ymnSheet: YmnSheetComponent;
+
 
   public engrave(): void {
-    this.musicToEngrave = this.score;
+    this.ymnSheet.engrave(this.score);
+  }
+
+  public clear() {
+    this.updateData('{}');
   }
 
   public save(): void {

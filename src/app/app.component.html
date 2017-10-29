@@ -1,32 +1,39 @@
 <div class="container-fluid">
-    <div class="row align-items-start">
-        <div class="col-md-4">
-            <form>
-                <div class="form-group">
-                    <label for="scoreTitle">Title :</label>
-                    <input class="form-control" type="text" id="scoreTitle" name="scoreTitle" placeholder="Für Elise" [(ngModel)]="title">
-                </div>
-                <div class="form-group">
-                    <label for="scoreAuthor">Author :</label>
-                    <input class="form-control" type="text" id="scoreAuthor" name="scoreAuthor" placeholder="Ludwig Van Beethoven" [(ngModel)]="author">
-                </div>
-                <div class="form-group">
-                    <label for="scoreAuthor">Tempo :</label>
-                    <input class="form-control" type="text" id="scoreTempo" name="scoreTempo" placeholder="48" [(ngModel)]="tempo">
-                </div>
-                <div class="form-group">
-                    <label for="scoreNotes">Score :</label>
-                    <textarea class="form-control score-input" id="scoreNotes" name="scoreNotes" rows="30" [(ngModel)]="score"></textarea>
-                </div>
-                <button (click)="engrave()">Engrave !</button>
-                <button (click)="save()">Save</button>
-                <button (click)="triggerFileSelect($event, fileSelector)">Load</button>
-                <input type="file" #fileSelector (change)="load($event)" style="display:none" accept="text/json">
-            </form>
-        </div>
-        <div class="col">
-            <ymn-sheet #ymnSheet [title]="title" [author]="author" [tempo]="tempo" [music]="musicToEngrave"></ymn-sheet>
-            <button (click)="ymnSheet.downloadImage()">Download</button>
-        </div>
+  <div class="btn-toolbar" role="toolbar" aria-label="Toolbar">
+    <div class="btn-group mr-2" role="group" aria-label="Data">
+      <button (click)="clear()">New</button>
+      <button (click)="triggerFileSelect($event, fileSelector)">Load</button>
+      <button (click)="save()">Save</button>
     </div>
+    <div class="btn-group mr-2" role="group" aria-label="Score">
+        <button (click)="engrave()">Engrave</button>
+        <button (click)="ymnSheet.downloadImage()">Download</button>
+    </div>
+  </div>
+  <div class="row align-items-start">
+    <div class="col-md-4">
+      <form>
+        <div class="form-group">
+          <label for="scoreTitle">Title :</label>
+          <input class="form-control" type="text" id="scoreTitle" name="scoreTitle" placeholder="Für Elise" [(ngModel)]="title">
+        </div>
+        <div class="form-group">
+          <label for="scoreAuthor">Author :</label>
+          <input class="form-control" type="text" id="scoreAuthor" name="scoreAuthor" placeholder="Ludwig Van Beethoven" [(ngModel)]="author">
+        </div>
+        <div class="form-group">
+          <label for="scoreAuthor">Tempo :</label>
+          <input class="form-control" type="text" id="scoreTempo" name="scoreTempo" placeholder="48" [(ngModel)]="tempo">
+        </div>
+        <div class="form-group">
+          <label for="scoreNotes">Score :</label>
+          <textarea class="form-control score-input" id="scoreNotes" name="scoreNotes" rows="30" [(ngModel)]="score"></textarea>
+        </div>
+        <input type="file" #fileSelector (change)="load($event)" style="display:none" accept="text/json">
+      </form>
+    </div>
+    <div class="col">
+      <ymn-sheet #ymnSheet [title]="title" [author]="author" [tempo]="tempo"></ymn-sheet>
+    </div>
+  </div>
 </div>

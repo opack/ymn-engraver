@@ -2,7 +2,8 @@
 
 # Roadmap
 * New features
-  * Create a toolbar with all action buttons
+  * Toolbar
+    * Save last 10 loaded files in a dropdown for load button
   * Validate score input
   * Score edition
     * Make continuation line continue after the last chord of the system if applicable, and start before the first chord of the next system

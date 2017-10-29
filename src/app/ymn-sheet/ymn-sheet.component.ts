@@ -43,10 +43,14 @@ export class YmnSheetComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.buildScore();
+  }
+
+  private buildScore(): void {
+    this.clearStage();
     if (this.music === undefined) {
       return;
     }
-    this.clearStage();
 
     const score = new YmnScore(this.title, this.author, this.tempo);
     this.score = score;
@@ -66,6 +70,10 @@ export class YmnSheetComponent implements OnInit, OnChanges {
     if (this.continuationLinesLayer !== undefined) {
       this.continuationLinesLayer.destroyChildren();
     }
+  }
+
+  public engrave(music: string) {
+    this.music = music;
   }
 
   public downloadImage(): void {
