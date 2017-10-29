@@ -6,8 +6,10 @@ import { ShapeConfig } from './shape-constants';
 
 export class YmnSystemLayout {
   public layout(system: YmnSystem, initialOffset: number): number {
-    this.layoutMeasures(system);
-    this.layoutStaves(system);
+    if (system.children.length > 0) {
+      this.layoutMeasures(system);
+      this.layoutStaves(system);
+    }
 
     system.shape.y(initialOffset);
     system.shape.updateSize();
