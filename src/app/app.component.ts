@@ -3,6 +3,7 @@ import * as FileSaver from 'file-saver';
 import { FileUtils } from '../utils/file-utils';
 import { StringUtils } from '../utils/string-utils';
 import { YmnSheetComponent } from './ymn-sheet/ymn-sheet.component';
+import { YmnDCRNTranslator } from './ymn-DCRN-translator';
 
 @Component({
   selector: 'app-root',
@@ -10,15 +11,15 @@ import { YmnSheetComponent } from './ymn-sheet/ymn-sheet.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  public title;
-  public author;
-  public tempo;
-  public score;
+  public title: string;
+  public author: string;
+  public tempo: string;
+  public score: string;
   @ViewChild('ymnSheet') ymnSheet: YmnSheetComponent;
 
 
   public engrave(): void {
-    this.ymnSheet.engrave(this.title, this.author, this.tempo, this.score);
+    this.ymnSheet.engrave(this.title, this.author, parseInt(this.tempo), this.score);
   }
 
   public clear() {
@@ -73,5 +74,11 @@ export class AppComponent {
     this.score = data.score;
 
     this.engrave();
+  }
+
+  public translateFromDCRN(): void {
+    const translator = new YmnDCRNTranslator();
+    translator.translate(this.score);
+    this.score = translator.translated;
   }
 }
