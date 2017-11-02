@@ -47,7 +47,11 @@ const PITCH_INDICATION_REGEXP = /-?\d{1,2}/;
  */
 export class YmnDCRNTranslator {
   private staves: Array<String>;
+<<<<<<< HEAD
   public translated: string;
+=======
+  private translated: string;
+>>>>>>> master
 
   public translate(DCRN: string): string {
 
@@ -83,11 +87,15 @@ export class YmnDCRNTranslator {
 
     // Split staves
     const dcrnStaves = dcrnSystem.split('\n');
+<<<<<<< HEAD
     dcrnStaves.forEach(dcrnStaff => {
       if (dcrnStaff.length > 0) {
         ymnSystem += this.translateStaff(dcrnStaff) + '\n';
       }
     });
+=======
+    dcrnStaves.forEach(dcrnStaff => this.translateStaff(dcrnStaff));
+>>>>>>> master
 
     ymnSystem += '}';
     this.translated += ymnSystem;
@@ -120,7 +128,11 @@ export class YmnDCRNTranslator {
     };
     PITCH_INDICATION_REGEXP.lastIndex = 0;
 
+<<<<<<< HEAD
     let matched = PITCH_INDICATION_REGEXP.exec(dcrnStaff);
+=======
+    let matched = SYSTEM_INDICATION_REGEXP.exec(dcrnStaff);
+>>>>>>> master
     while (matched !== null) {
       const pitch = parseInt(matched[0]);
       if (bounds === undefined) {
@@ -133,7 +145,10 @@ export class YmnDCRNTranslator {
       } else if (pitch > bounds.max) {
         bounds.max = pitch;
       }
+<<<<<<< HEAD
       matched = PITCH_INDICATION_REGEXP.exec(dcrnStaff);
+=======
+>>>>>>> master
     }
 
     // Compute corresponding octaves
