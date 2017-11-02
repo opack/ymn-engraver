@@ -42,6 +42,27 @@ const CMN_KEY_SIGNATURES_FLATS = [
 ];
 
 const PITCH_INDICATION_REGEXP = /-?\d{1,2}/g;
+
+const DCRN_SPLIT_REGEXP = /(G|F)(?:(#|b)(\d))?\|(.*)/ig;
+
+/**
+ * Parse DCRN notes. If a pitch (number, 'x', '*') is found, then it is placed in the first
+ * group; if a separator is found ('+',  ', ':', '|'), then it is placed in the second group.
+ */
+const DCRN_PARSER_REGEXP = /(-?\d{1,2}|[x\*])|([\+ :\|])/g;
+
+class DCRNStaffData {
+  // Data extracted from input
+  public clef: string;
+  public alteration: string;
+  public alterationCount: number;
+  public notes;
+
+  // Computed data
+  public clefOffset: number;
+  public keySignatureAlteration: Array<number>;
+}
+
 /**
  * Translates a DCRN music string into YMN
  */
@@ -85,7 +106,7 @@ export class YmnDCRNTranslator {
     const dcrnStaves = dcrnSystem.split('\n');
     dcrnStaves.forEach(dcrnStaff => {
       if (dcrnStaff.length > 0) {
-        ymnSystem += this.translateStaff(dcrnStaff);
+        ymnSystem += this.translateDCRNStaff(dcrnStaff);
       }
     });
 
@@ -93,9 +114,17 @@ export class YmnDCRNTranslator {
     this.translated += ymnSystem;
   }
 
-  private translateStaff(dcrnStaff: string): string {
+  private translateDCRNStaff(dcrnStaff: string): string {
+    // If separator staff, then nothing to do
+    if (dcrnStaff.charAt(0) === '-') {
+      return '-\n';
+    }
+
+    // Extract key signature
+    const dcrnData = this.extractData(dcrnStaff);
+
     // Compute min and max octaves for the DCRN staff
-    const bounds = this.computeStaffOctavesBounds(dcrnStaff);
+    const bounds = this.computeStaffOctavesBounds(dcrnData);
 
     // Create one YMN staff for each impacted octave
     const staves: {[octave: number]: string} = [];
@@ -108,9 +137,62 @@ export class YmnDCRNTranslator {
       } else if (octave < 0) {
         clefIndication = 'B';
       }
-      staves[octave] = clefIndication + Math.abs(octave);
+      staves[octave] = clefIndication + Math.abs(octave) + '|';
     }
 
+    // Translate the staff
+    DCRN_PARSER_REGEXP.lastIndex = 0;
+    let matched = DCRN_PARSER_REGEXP.exec(dcrnData.notes);
+    let parsedPitch;
+    let parsedSeparator;
+    let inChord = false;
+    let dcrnPitch: number;
+    let ymnPitch: number;
+    let ymnOctave: number;
+    let lastYmnOctave: number;
+    while (matched !== null) {
+      // Retrieve parsed tokens
+      parsedPitch = matched[1];
+      parsedSeparator = matched[2];
+
+      // Process the parsed token
+      if (parsedPitch !== undefined) {
+        // Compute the YMN octave and pitch from the DCRN pitch
+        dcrnPitch = parseInt(parsedPitch) + dcrnData.clefOffset;
+        ymnOctave = this.getOctaveForDCRNPitch(dcrnPitch);
+        ymnPitch = this.getPitchForDCRNPitch(dcrnPitch, dcrnData.keySignatureAlteration);
+
+        // If in a chord, then if the octave is the same as the previous note we
+        // must write both pitches on the same YMN staff and separate them with
+        // a '+' sign
+        if (inChord) {
+          if (lastYmnOctave === ymnOctave) {
+            staves[ymnOctave] += '+';
+          }
+          inChord = false;
+        }
+
+        // Write the pitch on the correct YMN staff
+        staves[ymnOctave] += ymnPitch;
+        lastYmnOctave = ymnOctave;
+      } else if (parsedSeparator !== undefined) {
+        // If the separator is a '+', then toggle the inChord flag
+        if (parsedSeparator === '+') {
+          inChord = true;
+        }
+        // Write the separator on each YMN staff
+        else {
+          for (let octave = bounds.max; octave >= bounds.min; octave--) {
+            staves[octave] += parsedSeparator;
+          }
+        }
+      }
+
+      // Go to the next token
+      matched = DCRN_PARSER_REGEXP.exec(dcrnData.notes);
+    }
+
+    // Create one string for the system, putting octaves from the highest to the lowest
     let translatedStaff = '';
     for (let octave = bounds.max; octave >= bounds.min; octave--) {
       translatedStaff += staves[octave] + '\n';
@@ -118,7 +200,46 @@ export class YmnDCRNTranslator {
     return translatedStaff;
   }
 
-  private computeStaffOctavesBounds(dcrnStaff: string): {min: number, max: number} {
+  private extractData(dcrnStaff: string): DCRNStaffData {
+    DCRN_SPLIT_REGEXP.lastIndex = 0;
+    const matched = DCRN_SPLIT_REGEXP.exec(dcrnStaff);
+
+    const data = new DCRNStaffData();
+    data.clef = matched[1];
+    data.alteration = matched[2];
+    data.alterationCount = parseInt(matched[3]);
+    data.notes = matched[4];
+
+    data.clefOffset = this.getClefOffset(data.clef);
+    if (data.alteration === '#') {
+      data.keySignatureAlteration = CMN_KEY_SIGNATURES_SHARPS[data.alterationCount];
+    }
+    // If alteration is 'b' or undefined, use FLATS alteration array
+    else {
+      data.keySignatureAlteration = CMN_KEY_SIGNATURES_FLATS[data.alterationCount];
+    }
+
+    return data;
+  }
+
+  /**
+   * Returns the number of positions to offset DCRN pitch. For G-Clef, DCRN pitch 1
+   * means E in the octave 0, but for F-clef the pitch 1 means G in octave B2 ! So
+   * to simplify computation we always work as if we were in G-clef but sometimes
+   * apply an offset if we are in another clef.
+   * All computations are made for the G-clef, so if
+   * the clef is F then the middle C is not at the position -2 but at position
+   * 10. So 10 as to be shifted to -2, the we offset by -12.
+   * @param clef
+   */
+  private getClefOffset(clef: string) {
+    if (clef === 'F') {
+      return -12;
+    }
+    return 0;
+  }
+
+  private computeStaffOctavesBounds(dcrnData: DCRNStaffData): {min: number, max: number} {
     // Get min and max pitch
     let bounds: {
       min: number,
@@ -126,20 +247,22 @@ export class YmnDCRNTranslator {
     };
     PITCH_INDICATION_REGEXP.lastIndex = 0;
 
-    let matched = PITCH_INDICATION_REGEXP.exec(dcrnStaff);
+    let matched = PITCH_INDICATION_REGEXP.exec(dcrnData.notes);
     while (matched !== null) {
-      const pitch = parseInt(matched[0]);
+      const dcrnPitch = parseInt(matched[0]) + dcrnData.clefOffset;
+      const ymnPitch = this.getPitchForDCRNPitch(dcrnPitch, dcrnData.keySignatureAlteration);
+
       if (bounds === undefined) {
         bounds = {
-          min: pitch,
-          max: pitch
+          min: ymnPitch,
+          max: ymnPitch
         }
-      } else if (pitch < bounds.min) {
-        bounds.min = pitch;
-      } else if (pitch > bounds.max) {
-        bounds.max = pitch;
+      } else if (ymnPitch < bounds.min) {
+        bounds.min = ymnPitch;
+      } else if (ymnPitch > bounds.max) {
+        bounds.max = ymnPitch;
       }
-      matched = PITCH_INDICATION_REGEXP.exec(dcrnStaff);
+      matched = PITCH_INDICATION_REGEXP.exec(dcrnData.notes);
     }
 
     // Compute corresponding octaves
@@ -170,7 +293,7 @@ export class YmnDCRNTranslator {
    * @param pitch
    * @param keySignatureAlteration Pitch modificator array for each CMN note.
    */
-  private getPitchForDCRNPitch(pitch: number, keySignatureAlteration: number): number {
+  private getPitchForDCRNPitch(pitch: number, keySignatureAlteration: Array<number>): number {
     // DCRN pitch -2 is in fact value CMN 0, so we shift the value by 2
     const correctedPitch = pitch + 2;
     // There are 7 values of DCRN pitch, so the "absolute" pitch is a modulo 7

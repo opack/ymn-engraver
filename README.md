@@ -15,26 +15,27 @@
     * If a note is below the 1st lines then number is negative. Example : for G staff, -1 means 1 position under the 1st line of the G-clef, meaning D. -2 means C...
     * YMN timing notation and other notations (systems, part separator...) must be respected
     * Example : 3 first measures of "Close Your Eyes" :
-      {
-      G#3|4:-2:-1+2:x+* 4|1+3:-3:-2+-4:1|-4+-6:*+*:*+*:*+*
-      -
-      F#3|-1 4:9:-3 2:7|-2 3:8:2 6:9 6|-3 2:6 7:*:* 5
-      }
+{
+G#3|3:-2:-1+1:x+* 3|0+2:-3:-2+-4:0|-4+-6:*+*:*+*:*+*
+-
+F#3|-1 3:8:-3 1:6|-2 2:7:1 5:8 5|-3 1:5 6:*:* 4
+}
       Just the treble part :
       {G#3|4:-2:-1+2:x+* 4|1+3:-3:-2+-4:1|-4+-6:*+*:*+*:*+*}
     * Algo : transformer une string DCRN en string YMN puis interpréter
       * Pour chaque système
         * Ouvrir le système
         * Pour chaque portée
+          * Si débute par un séparateur de portée '\-' : traduire par une portée '-' et passer à la portée DCRN suivante
           * Chercher le nombre de portées YMN :
             * Faire 1 passe sur chaque portée pour rechercher le plus grand et le plus petit chiffre
             * Déduire la portée de la note la plus haute et celle de la note la plus basse
             * Créer 1 chaine pour chaque portée YMN et y inscrire le nom de l'octave (mais pas la barre de mesure)
           * Parser la chaine symbole par symbole
-            * Si séparateur de portée '\-' : indiquer que la portée la plus basse du système contient un séparateur et passer à la portée DCRN suivante
             * Si armure '(G|F)(#\d|b\d)?' : retenir l'armure pour en tenir compte lors de la transcription des notes
-            * Si séparateur YMN '[ :|]' : le reproduire sur toutes les portées YMN
+            * Si séparateur YMN '[ :|]' : parser le pitch, l'écrire et reproduire le séparateur sur toutes les portées YMN
             * Si accord '\+' :
+              * Parser le pitch, l'écrire
               * Mettre flag pour indiquer "en cours d'accord"
             * Si note '-?\d{1,2}' :
               * Déduire l'octave et donc la portée YMN correspondante
