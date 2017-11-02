@@ -41,17 +41,13 @@ const CMN_KEY_SIGNATURES_FLATS = [
   [-1, -1, -1, -1, -1, -1, -1]
 ];
 
-const PITCH_INDICATION_REGEXP = /-?\d{1,2}/;
+const PITCH_INDICATION_REGEXP = /-?\d{1,2}/g;
 /**
  * Translates a DCRN music string into YMN
  */
 export class YmnDCRNTranslator {
   private staves: Array<String>;
-<<<<<<< HEAD
   public translated: string;
-=======
-  private translated: string;
->>>>>>> master
 
   public translate(DCRN: string): string {
 
@@ -83,25 +79,21 @@ export class YmnDCRNTranslator {
   }
 
   private translateSystem(dcrnSystem: string): void {
-    let ymnSystem = '{';
+    let ymnSystem = '{\n';
 
     // Split staves
     const dcrnStaves = dcrnSystem.split('\n');
-<<<<<<< HEAD
     dcrnStaves.forEach(dcrnStaff => {
       if (dcrnStaff.length > 0) {
-        ymnSystem += this.translateStaff(dcrnStaff) + '\n';
+        ymnSystem += this.translateStaff(dcrnStaff);
       }
     });
-=======
-    dcrnStaves.forEach(dcrnStaff => this.translateStaff(dcrnStaff));
->>>>>>> master
 
-    ymnSystem += '}';
+    ymnSystem += '}\n';
     this.translated += ymnSystem;
   }
 
-  private translateStaff(dcrnStaff: string): void {
+  private translateStaff(dcrnStaff: string): string {
     // Compute min and max octaves for the DCRN staff
     const bounds = this.computeStaffOctavesBounds(dcrnStaff);
 
@@ -118,6 +110,12 @@ export class YmnDCRNTranslator {
       }
       staves[octave] = clefIndication + Math.abs(octave);
     }
+
+    let translatedStaff = '';
+    for (let octave = bounds.max; octave >= bounds.min; octave--) {
+      translatedStaff += staves[octave] + '\n';
+    }
+    return translatedStaff;
   }
 
   private computeStaffOctavesBounds(dcrnStaff: string): {min: number, max: number} {
@@ -128,11 +126,7 @@ export class YmnDCRNTranslator {
     };
     PITCH_INDICATION_REGEXP.lastIndex = 0;
 
-<<<<<<< HEAD
     let matched = PITCH_INDICATION_REGEXP.exec(dcrnStaff);
-=======
-    let matched = SYSTEM_INDICATION_REGEXP.exec(dcrnStaff);
->>>>>>> master
     while (matched !== null) {
       const pitch = parseInt(matched[0]);
       if (bounds === undefined) {
@@ -145,10 +139,7 @@ export class YmnDCRNTranslator {
       } else if (pitch > bounds.max) {
         bounds.max = pitch;
       }
-<<<<<<< HEAD
       matched = PITCH_INDICATION_REGEXP.exec(dcrnStaff);
-=======
->>>>>>> master
     }
 
     // Compute corresponding octaves

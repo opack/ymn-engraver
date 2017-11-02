@@ -20,6 +20,8 @@
       -
       F#3|-1 4:9:-3 2:7|-2 3:8:2 6:9 6|-3 2:6 7:*:* 5
       }
+      Just the treble part :
+      {G#3|4:-2:-1+2:x+* 4|1+3:-3:-2+-4:1|-4+-6:*+*:*+*:*+*}
     * Algo : transformer une string DCRN en string YMN puis interpréter
       * Pour chaque système
         * Ouvrir le système
