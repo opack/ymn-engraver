@@ -12,11 +12,15 @@ export class YmnStaffParser {
 
     const measuresString = staffString.split('|');
     measuresString.forEach(measureString => {
+      // Do not treat empty measures
+      if (measureString === '') {
+        return true;
+      }
       const measure = new YmnMeasure();
-      
+
       // Add shape
       staff.shape.add(measure.shape);
-      
+
       // Set links
       measure.parent = staff;
       if (previousMeasure !== undefined) {
