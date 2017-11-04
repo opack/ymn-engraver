@@ -1,7 +1,7 @@
 import { YmnMeasure } from './ymn-measure';
 import { YmnBeat } from './ymn-beat';
 import { YmnBeatParser } from './ymn-beat-parser';
-import { OCTAVE_INDICATION_REGEXP } from './score-constants';
+import { OCTAVE_INDICATION_REGEXP, YmnScoreNotation } from './score-constants';
 
 export class YmnMeasureParser {
   public parse(measureString: string, measure: YmnMeasure): void {
@@ -17,7 +17,7 @@ export class YmnMeasureParser {
         previousBeat = measure.previous.children[measure.previous.children.length - 1];
       }
 
-      const beatsString = measureString.split('.');
+      const beatsString = measureString.split(YmnScoreNotation.separators.beat);
 
       beatsString.forEach(beatString => {
         const beat = new YmnBeat();

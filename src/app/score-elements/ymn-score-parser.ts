@@ -1,30 +1,13 @@
 import { YmnScore } from './ymn-score';
 import { YmnSystem } from './ymn-system';
 import { YmnSystemParser } from './ymn-system-parser';
-import { SYSTEM_INDICATION_REGEXP } from './score-constants';
+import { SYSTEM_INDICATION_REGEXP, YmnScoreNotation } from './score-constants';
 
 export class YmnScoreParser {
   public parse(scoreString: string, score: YmnScore): void {
-    SYSTEM_INDICATION_REGEXP.lastIndex = 0;
-    let matched = SYSTEM_INDICATION_REGEXP.exec(scoreString);
-    if (matched === null) {
-      alert('No system detected. Remember to enclose your systems with curly braces "{...}".');
-      return;
-    }
 
-    const systemsStrings: Array<string> = [];
-    do {
-      systemsStrings.push(matched[1]);
-      matched = SYSTEM_INDICATION_REGEXP.exec(scoreString);
-    }
-    while (matched !== null);
+    const systemsStrings = scoreString.split(YmnScoreNotation.separators.system);
 
-    this.parseSystems(systemsStrings, score);
-
-    score.shape.update(score.title, score.author, score.tempo);
-  }
-
-  private parseSystems(systemsStrings: string[], score: YmnScore): void {
     const systemParser = new YmnSystemParser();
 
     let previousSystem: YmnSystem;
@@ -33,7 +16,7 @@ export class YmnScoreParser {
 
       // Add shape
       score.shape.add(system.shape);
-      
+
       // Set links
       system.parent = score;
       if (previousSystem !== undefined) {
@@ -46,6 +29,7 @@ export class YmnScoreParser {
       systemParser.parse(systemString, system);
       score.children.push(system);
     });
-  }
 
+    score.shape.update(score.title, score.author, score.tempo);
+  }
 }

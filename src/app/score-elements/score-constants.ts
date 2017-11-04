@@ -65,3 +65,18 @@ export const NOTES_TO_PITCHES: {[note: string]: string} = {
 export const OCTAVE_INDICATION_REGEXP = /^((T|B)\d|0)$/i;
 
 export const SYSTEM_INDICATION_REGEXP = /\{((?:.|\s)+?)\}/g;
+
+export const YmnScoreNotation = {
+  /**
+   * Separators used to split the music in YMN and parse it
+   */
+  separators: {
+    system: /=+/,
+    staff: '\n',
+    measure: '|',
+    beat: '.',
+    note: ' ',
+    chord: '+',
+    part: '-',
+  }
+}

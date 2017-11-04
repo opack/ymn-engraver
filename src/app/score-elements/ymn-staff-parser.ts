@@ -1,6 +1,7 @@
 import { YmnStaff } from './ymn-staff';
 import { YmnMeasure } from './ymn-measure';
 import { YmnMeasureParser } from './ymn-measure-parser';
+import { YmnScoreNotation } from './score-constants';
 
 export class YmnStaffParser {
   public parse(staffString: string, staff: YmnStaff): void {
@@ -10,7 +11,7 @@ export class YmnStaffParser {
       previousMeasure = staff.previous.children[staff.previous.children.length - 1];
     }
 
-    const measuresString = staffString.split('|');
+    const measuresString = staffString.split(YmnScoreNotation.separators.measure);
     measuresString.forEach(measureString => {
       // Do not treat empty measures
       if (measureString === '') {

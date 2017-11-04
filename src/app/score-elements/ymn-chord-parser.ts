@@ -1,13 +1,14 @@
 import { YmnChord } from './ymn-chord';
 import { YmnNote } from './ymn-note';
 import { YmnNoteParser } from './ymn-note-parser';
+import { YmnScoreNotation } from './score-constants';
 
 export class YmnChordParser {
   public parse(chordString: string, chord: YmnChord): void {
     const noteParser = new YmnNoteParser();
     let previousNote: YmnNote;
-    const notesString = chordString.split('+');
-    
+    const notesString = chordString.split(YmnScoreNotation.separators.chord);
+
     notesString.forEach(noteString => {
       const note = new YmnNote();
 
