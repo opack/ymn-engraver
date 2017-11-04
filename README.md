@@ -2,6 +2,7 @@
 
 # Roadmap
 * New features
+  * Option pour ne pas afficher les x s'il n'est pas significatif
   * Toolbar
     * Save last 10 loaded files in a dropdown for load button
   * Validate score input
@@ -15,11 +16,9 @@
     * If a note is below the 1st lines then number is negative. Example : for G staff, -1 means 1 position under the 1st line of the G-clef, meaning D. -2 means C...
     * YMN timing notation and other notations (systems, part separator...) must be respected
     * Example : 3 first measures of "Close Your Eyes" :
-{
-G#3|3:-2:-1+1:x+* 3|0+2:-3:-2+-4:0|-4+-6:*+*:*+*:*+*
+G#3|3.-2.1+-1.x+* 3|2+0.-3.-4+-2.0|-6+-4.*+*.*+*.*+*
 -
-F#3|-1 3:8:-3 1:6|-2 2:7:1 5:8 5|-3 1:5 6:*:* 4
-}
+F#3|-1 3.8.-3 1.6|-2 2.7.1 5.8 5|-3 1.5 6.*.* 4
       Just the treble part :
       {G#3|4:-2:-1+2:x+* 4|1+3:-3:-2+-4:1|-4+-6:*+*:*+*:*+*}
     * Algo : transformer une string DCRN en string YMN puis interpréter
@@ -58,6 +57,17 @@ F#3|-1 3:8:-3 1:6|-2 2:7:1 5:8 5|-3 1:5 6:*:* 4
   * Change layout() methods to static methods
   * Use FireBase to store and load files for the user (who has to be authenticated)
   * Use FireBase to deploy and serve the application
+  * Use a regexp based system to parse YMN notation. Ex: 
+      export const YmnScoreNotation = {
+      parsers: {
+        system: /\{(.*)\}/g,
+        staff: /((T|B)\d|0)(.*)\n/ig,
+        measureSeparator: /\|(.*)/g,
+        beatSeparator: /:(.*)/g,
+        chordNoteSeparator: /\+(.*)/g,
+        partSeparator: /\-/g,
+      }
+    }
 * Bugfixes
   * Draw continuation lines not only for the first chord note
   * Draw the beat bar only if it is not the last of its measure.

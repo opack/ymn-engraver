@@ -1,5 +1,5 @@
 
-import { SYSTEM_INDICATION_REGEXP, NOTES_TO_PITCHES } from './score-elements/score-constants';
+import { SYSTEM_INDICATION_REGEXP, NOTES_TO_PITCHES, YmnScoreNotation } from './score-elements/score-constants';
 
 const CMN_NOTES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 // Indicates the alteration to the pitch for the notes, depending on the number of sharps in the key signature
@@ -47,9 +47,9 @@ const DCRN_SPLIT_REGEXP = /(G|F)(?:(#|b)(\d))?\|(.*)/ig;
 
 /**
  * Parse DCRN notes. If a pitch (number, 'x', '*') is found, then it is placed in the first
- * group; if a separator is found ('+',  ', ':', '|'), then it is placed in the second group.
+ * group; if a separator is found ('+', ' ', '.', '|'), then it is placed in the second group.
  */
-const DCRN_PARSER_REGEXP = /(-?\d{1,2}|[x\*])|([\+ :\|])/g;
+const DCRN_PARSER_REGEXP = /(-?\d{1,2}|[x\*])|([\+ \.\|])/g;
 
 class DCRNStaffData {
   // Data extracted from input
@@ -68,56 +68,41 @@ class DCRNStaffData {
  */
 export class YmnDCRNTranslator {
   private staves: Array<String>;
-  public translated: string;
+  private translated: string;
 
   public translate(DCRN: string): string {
+    // Reset translate result
+    this.translated = '';
 
     // Split in systems
-    const systems = this.splitSystems(DCRN);
+    const systems = DCRN.split(YmnScoreNotation.separators.system);
 
     // Translate each system and append to the result
-    systems.forEach(system => this.translateSystem(system));
+    systems.forEach(system => this.translateDCRNSystem(system));
 
     return this.translated;
   }
 
-  private splitSystems(DCRN: string): Array<string> {
-    SYSTEM_INDICATION_REGEXP.lastIndex = 0;
-    let matched = SYSTEM_INDICATION_REGEXP.exec(DCRN);
-    if (matched === null) {
-      alert('No system detected. Remember to enclose your systems with curly braces "{...}".');
-      return;
-    }
-
-    const systems: Array<string> = [];
-    do {
-      systems.push(matched[1]);
-      matched = SYSTEM_INDICATION_REGEXP.exec(DCRN);
-    }
-    while (matched !== null);
-
-    return systems;
-  }
-
-  private translateSystem(dcrnSystem: string): void {
-    let ymnSystem = '{\n';
+  private translateDCRNSystem(dcrnSystem: string): void {
+    let ymnSystem = '';
 
     // Split staves
-    const dcrnStaves = dcrnSystem.split('\n');
+    const dcrnStaves = dcrnSystem.split(YmnScoreNotation.separators.staff);
     dcrnStaves.forEach(dcrnStaff => {
       if (dcrnStaff.length > 0) {
         ymnSystem += this.translateDCRNStaff(dcrnStaff);
       }
     });
 
-    ymnSystem += '}\n';
+    ymnSystem += '===================================\n';
     this.translated += ymnSystem;
   }
 
   private translateDCRNStaff(dcrnStaff: string): string {
     // If separator staff, then nothing to do
-    if (dcrnStaff.charAt(0) === '-') {
-      return '-\n';
+    if (dcrnStaff.charAt(0) === YmnScoreNotation.separators.part) {
+      return YmnScoreNotation.separators.part +
+      '\n';
     }
 
     // Extract key signature
@@ -130,11 +115,9 @@ export class YmnDCRNTranslator {
     const staves: {[octave: number]: string} = [];
     let clefIndication: string;
     for (let octave = bounds.min; octave <= bounds.max; octave++) {
-      if (octave === 0) {
-        clefIndication = '';
-      } else if (octave > 0) {
+      if (octave > 0) {
         clefIndication = 'T';
-      } else if (octave < 0) {
+      } else {
         clefIndication = 'B';
       }
       staves[octave] = clefIndication + Math.abs(octave) + '|';
@@ -147,7 +130,7 @@ export class YmnDCRNTranslator {
     let parsedSeparator;
     let inChord = false;
     let dcrnPitch: number;
-    let ymnPitch: number;
+    let ymnPitch: string;
     let ymnOctave: number;
     let lastYmnOctave: number;
     while (matched !== null) {
@@ -157,10 +140,18 @@ export class YmnDCRNTranslator {
 
       // Process the parsed token
       if (parsedPitch !== undefined) {
-        // Compute the YMN octave and pitch from the DCRN pitch
-        dcrnPitch = parseInt(parsedPitch) + dcrnData.clefOffset;
-        ymnOctave = this.getOctaveForDCRNPitch(dcrnPitch);
-        ymnPitch = this.getPitchForDCRNPitch(dcrnPitch, dcrnData.keySignatureAlteration);
+        // If pitch is silence (x) or continuation (*), then we have to place it on the
+        // same octave as the previous pitch. But if previous pitch was a chord, we have
+        // to place it on the corresponding place (octave and height) too.
+        if (parsedPitch === 'x' || parsedPitch === '*') {
+          ymnOctave = lastYmnOctave;
+          ymnPitch = parsedPitch;
+        } else {
+          // Compute the YMN octave and pitch from the DCRN pitch
+          dcrnPitch = parseInt(parsedPitch) + dcrnData.clefOffset;
+          ymnOctave = this.getYMNOctaveForDCRNPitch(dcrnPitch);
+          ymnPitch = '' + this.getYMNPitchForDCRNPitch(dcrnPitch, dcrnData.keySignatureAlteration);
+        }
 
         // If in a chord, then if the octave is the same as the previous note we
         // must write both pitches on the same YMN staff and separate them with
@@ -250,7 +241,7 @@ export class YmnDCRNTranslator {
     let matched = PITCH_INDICATION_REGEXP.exec(dcrnData.notes);
     while (matched !== null) {
       const dcrnPitch = parseInt(matched[0]) + dcrnData.clefOffset;
-      const ymnPitch = this.getPitchForDCRNPitch(dcrnPitch, dcrnData.keySignatureAlteration);
+      const ymnPitch = this.getYMNPitchForDCRNPitch(dcrnPitch, dcrnData.keySignatureAlteration);
 
       if (bounds === undefined) {
         bounds = {
@@ -267,24 +258,24 @@ export class YmnDCRNTranslator {
 
     // Compute corresponding octaves
     return {
-      min: this.getOctaveForDCRNPitch(bounds.min),
-      max: this.getOctaveForDCRNPitch(bounds.max)
+      min: this.getYMNOctaveForDCRNPitch(bounds.min),
+      max: this.getYMNOctaveForDCRNPitch(bounds.max)
     };
   }
 
   /**
    * Returns the YMN octave corresponding to the given DCRN pitch.
-   * YMN octave 0 holds DCRN pitches from -2 (C in english CMN) to 4
+   * YMN octave 1 holds DCRN pitches from -2 (C in english CMN) to 4
    * (B in english CMN).
-   * We know that pitch -2 is in octave 0, and pitch 5 is in octave 1.
-   * We can imagine a line from (-2;0) to (5;1) and determine its
+   * We know that pitch -2 is in octave 1, and pitch 5 is in octave 2.
+   * We can imagine a line from (-2;1) to (5;2) and determine its
    * equation y=ax+b, where y is the octave and x is the pitch.
    * We obtain octave = 1/7 * pitch + 2.
    * We will use this equation to retrieve the YMN octave from a DCRN pitch.
    * @param pitch pitch in DCRN
    */
-  private getOctaveForDCRNPitch(pitch: number): number {
-    return Math.floor(1/7 * (pitch + 2));
+  private getYMNOctaveForDCRNPitch(pitch: number): number {
+    return Math.floor(1/7 * (pitch + 2)) + 1;
   }
 
   /**
@@ -293,7 +284,7 @@ export class YmnDCRNTranslator {
    * @param pitch
    * @param keySignatureAlteration Pitch modificator array for each CMN note.
    */
-  private getPitchForDCRNPitch(pitch: number, keySignatureAlteration: Array<number>): number {
+  private getYMNPitchForDCRNPitch(pitch: number, keySignatureAlteration: Array<number>): number {
     // DCRN pitch -2 is in fact value CMN 0, so we shift the value by 2
     const correctedPitch = pitch + 2;
     // There are 7 values of DCRN pitch, so the "absolute" pitch is a modulo 7

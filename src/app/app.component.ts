@@ -14,7 +14,7 @@ export class AppComponent {
   public title: string;
   public author: string;
   public tempo: string;
-  public score: string;
+  public score: string = 'G#3|3.-2.1+-1.x+* 3|2+0.-3.-4+-2.0|-6+-4.*+*.*+*.*+*';
   @ViewChild('ymnSheet') ymnSheet: YmnSheetComponent;
 
 
@@ -78,7 +78,6 @@ export class AppComponent {
 
   public translateFromDCRN(): void {
     const translator = new YmnDCRNTranslator();
-    translator.translate(this.score);
-    this.score = translator.translated;
+    this.score = translator.translate(this.score);
   }
 }
