@@ -17,7 +17,7 @@ export class YmnMeasureParser {
         previousBeat = measure.previous.children[measure.previous.children.length - 1];
       }
 
-      const beatsString = measureString.split(':');
+      const beatsString = measureString.split('.');
 
       beatsString.forEach(beatString => {
         const beat = new YmnBeat();
