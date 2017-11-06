@@ -11,30 +11,68 @@
         <button (click)="ymnSheet.downloadImage()">Download</button>
     </div>
   </div>
-  <div class="row align-items-start">
-    <div class="col-md-4">
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#edition" role="tab">Edition</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#engraving" role="tab">Engraving</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#options" role="tab">Options</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="edition" role="tabpanel">
       <form>
-        <div class="form-group">
-          <label for="scoreTitle">Title :</label>
-          <input class="form-control" type="text" id="scoreTitle" name="scoreTitle" placeholder="Für Elise" [(ngModel)]="title">
-        </div>
-        <div class="form-group">
-          <label for="scoreAuthor">Author :</label>
-          <input class="form-control" type="text" id="scoreAuthor" name="scoreAuthor" placeholder="Ludwig Van Beethoven" [(ngModel)]="author">
-        </div>
-        <div class="form-group">
-          <label for="scoreAuthor">Tempo :</label>
-          <input class="form-control" type="text" id="scoreTempo" name="scoreTempo" placeholder="48" [(ngModel)]="tempo">
-        </div>
-        <div class="form-group">
-          <label for="scoreNotes">Score :</label>
-          <textarea class="form-control score-input" id="scoreNotes" name="scoreNotes" rows="30" [(ngModel)]="score"></textarea>
-        </div>
+          <div class="form-group">
+            <label for="scoreTitle">Title :</label>
+            <input class="form-control" type="text" id="scoreTitle" name="scoreTitle" placeholder="Für Elise" [(ngModel)]="title">
+          </div>
+          <div class="form-group">
+            <label for="scoreAuthor">Author :</label>
+            <input class="form-control" type="text" id="scoreAuthor" name="scoreAuthor" placeholder="Ludwig Van Beethoven" [(ngModel)]="author">
+          </div>
+          <div class="form-group">
+            <label for="scoreAuthor">Tempo :</label>
+            <input class="form-control" type="text" id="scoreTempo" name="scoreTempo" placeholder="48" [(ngModel)]="tempo">
+          </div>
+          <div class="form-group">
+            <label for="scoreNotes">Score :</label>
+            <textarea class="form-control score-input" id="scoreNotes" name="scoreNotes" rows="30" [(ngModel)]="score"></textarea>
+          </div>
         <input type="file" #fileSelector (change)="load($event)" style="display:none" accept="text/json">
       </form>
     </div>
-    <div class="col">
+    <div class="tab-pane fade" id="engraving" role="tabpanel">
       <ymn-sheet #ymnSheet></ymn-sheet>
     </div>
+    <div class="tab-pane fade" id="options" role="tabpanel">
+      Coming soon...
+    </div>
+  </div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#home" role="tab">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Profile</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#messages" role="tab">Messages</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="home" role="tabpanel">...</div>
+    <div class="tab-pane fade" id="profile" role="tabpanel">...</div>
+    <div class="tab-pane fade" id="messages" role="tabpanel">...</div>
+    <div class="tab-pane fade" id="settings" role="tabpanel">...</div>
   </div>
 </div>
