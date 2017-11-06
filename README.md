@@ -1,5 +1,15 @@
 # YmnEngraver
-
+T1|10.2.7+3.+* 10|9+5..2.5|2.*.*.*|*.*.*.*|
+B1|...|.12.10.|10.*.*.*|*.*.*.*|
+-
+B1| 2.10..7|.9.5.10 5|.5 7.*.* 3|.5 7..|
+B2|7 ..3 10.|5 12..10 .|3 0...|3 10..10.*|
+============================================
+T1|10.2.7+3.*+* *+10|
+B1|..9.*|
+-
+B1| 2.10+7 2..10+7|
+B2|7 ..3 10. 10|
 # Roadmap
 * New features
   * Option pour ne pas afficher les x s'il n'est pas significatif
@@ -69,7 +79,6 @@ F#3|-1 3.8.-3 1.6|-2 2.7.1 5.8 5|-3 1.5 6.*.* 4
       }
     }
 * Bugfixes
-  * Draw continuation lines not only for the first chord note
   * Draw the beat bar only if it is not the last of its measure.
 
 # Developing

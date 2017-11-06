@@ -14,12 +14,23 @@ export class AppComponent {
   public title: string;
   public author: string;
   public tempo: string;
-  public score: string = 'G#3|3.-2.1+-1.x+* 3|2+0.-3.-4+-2.0|-6+-4.*+*.*+*.*+*';
+  public score: string = '\
+T1|10.2.7+3.+* 10|9+5..2.5|2.*.*.*|*.*.*.*|\n\
+B1|...|.12.10.|10.*.*.*|*.*.*.*|\n\
+-\n\
+B1| 2.10..7|.9.5.10 5|.5 7.*.* 3|.5 7..|\n\
+B2|7 ..3 10.|5 12..10 .|3 0...|3 10..10.*|\n\
+============================================\n\
+T1|10.2.7+3.*+* *+10|\n\
+B1|..9.*|\n\
+-\n\
+B1| 2.10+7 2..10+7|\n\
+B2|7 ..3 10. 10|';
   @ViewChild('ymnSheet') ymnSheet: YmnSheetComponent;
 
 
   public engrave(): void {
-    this.ymnSheet.engrave(this.title, this.author, parseInt(this.tempo), this.score);
+    this.ymnSheet.engrave(this.title, this.author, parseInt(this.tempo, 10), this.score);
   }
 
   public clear() {
@@ -34,7 +45,7 @@ export class AppComponent {
       score: StringUtils.emptyIfUndefined(this.score)
     };
     const blob = new Blob([JSON.stringify(data)], {
-      type: "text/plain;charset=utf-8"
+      type: 'text/plain;charset=utf-8'
     });
     FileSaver.saveAs(blob, `${StringUtils.valueOrDefault(this.title, 'untitled')}.json`);
   }

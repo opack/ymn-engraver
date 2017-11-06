@@ -24,37 +24,66 @@ export class YmnStaff {
       return;
     }
 
-    const firstMeasureWithBeats = this.children[1];
-    const firstBeat = firstMeasureWithBeats.children[0];
-    const firstChord = firstBeat.children[0];
-
     const longNotesList: Array<YmnLongNote> = [];
 
-    let longChord: YmnChord;
-    let curChord = firstChord;
+    let firstChord: YmnChord;
+    let lastChord: YmnChord;
+    let curChord = this.getFirstChord();
     do {
-      if (!curChord.children[0].isContinuationNote) {
-        longChord = curChord;
-        while (curChord.next !== undefined && curChord.next.children[0].isContinuationNote) {
-          curChord = curChord.next;
-        }
+      for (let curNote = 0; curNote < curChord.children.length; curNote++) {
+        if (!curChord.children[curNote].isContinuationNote) {
+          firstChord = curChord;
+          lastChord = curChord;
+          while (lastChord.next !== undefined
+          && lastChord.next.children[curNote] !== undefined
+          && lastChord.next.children[curNote].isContinuationNote) {
+            lastChord = lastChord.next;
+          }
 
-        // If the curChord is a continuation cord, then we add it to the list
-        if (curChord.children[0].isContinuationNote) {
-          // Here curChord.children[0] is a note which has no next or has a next that is not
-          // a continuation note. Thus, it is the last continuation chord for longChord.
-          longNotesList.push({
-            staffShape: this.shape,
-            firstNoteShape: longChord.children[0].shape,
-            lastNoteShape: curChord.children[0].shape
-          });
+          // If the curChord is a continuation cord, then we add it to the list
+          if (lastChord.children[curNote].isContinuationNote) {
+            // Here curChord.children[curNote] is a note which has no next or has a next that is not
+            // a continuation note. Thus, it is the last continuation chord for firstChord.
+            longNotesList.push({
+              staffShape: this.shape,
+              firstNoteShape: firstChord.children[curNote].shape,
+              lastNoteShape: lastChord.children[curNote].shape
+            });
+          }
         }
       }
+      // if (!curChord.children[0].isContinuationNote) {
+      //   firstChord = curChord;
+      //   while (curChord.next !== undefined && curChord.next.children[0].isContinuationNote) {
+      //     curChord = curChord.next;
+      //   }
+      //
+      //   // If the curChord is a continuation cord, then we add it to the list
+      //   if (curChord.children[0].isContinuationNote) {
+      //     // Here curChord.children[0] is a note which has no next or has a next that is not
+      //     // a continuation note. Thus, it is the last continuation chord for firstChord.
+      //     longNotesList.push({
+      //       staffShape: this.shape,
+      //       firstNoteShape: firstChord.children[0].shape,
+      //       lastNoteShape: curChord.children[0].shape
+      //     });
+      //   }
+      // }
 
       // Continue to search next long note
       curChord = curChord.next;
     }
     while (curChord !== undefined);
     return longNotesList;
+  }
+
+  /**
+   * Returns the first chord of the staff
+   * @returns {YmnChord}
+   */
+  public getFirstChord(): YmnChord {
+    const firstMeasureWithBeats = this.children[1];
+    const firstBeat = firstMeasureWithBeats.children[0];
+    return firstBeat.children[0];
   }
 }
