@@ -8,7 +8,7 @@ export class YmnScoreShape extends Konva.Layer {
   public tempo: Konva.Text;
   public leftTempoSeparator: Konva.Line;
   public rightTempoSeparator: Konva.Line;
-
+  public score: Konva.Group;
   public continuationLines: Konva.Group;
 
   constructor() {
@@ -30,13 +30,16 @@ export class YmnScoreShape extends Konva.Layer {
     });
     this.add(this.author);
 
+    this.score = new Konva.Group({});
+    this.add(this.score);
+
     this.tempo = new Konva.Text ({
       text: 'Tempo',
       fontSize: ShapeConfig.score.tempo.fontSize,
       fontFamily: ShapeConfig.score.tempo.fontFamily,
       align: 'center'
     });
-    this.add(this.tempo);
+    this.score.add(this.tempo);
 
     this.leftTempoSeparator = new Konva.Line({
       points: [
@@ -46,13 +49,13 @@ export class YmnScoreShape extends Konva.Layer {
       strokeWidth: ShapeConfig.beat.strokeWidth,
       dash: ShapeConfig.beat.dash
     });
-    this.add(this.leftTempoSeparator);
+    this.score.add(this.leftTempoSeparator);
 
     this.rightTempoSeparator = <Konva.Line>this.leftTempoSeparator.clone();
-    this.add(this.rightTempoSeparator);
+    this.score.add(this.rightTempoSeparator);
 
     this.continuationLines = new Konva.Group();
-    this.add(this.continuationLines);
+    this.score.add(this.continuationLines);
   }
 
   public update(title: string, author: string, tempo: number) {

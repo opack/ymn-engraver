@@ -15,7 +15,7 @@ export class YmnScoreParser {
       const system = new YmnSystem();
 
       // Add shape
-      score.shape.add(system.shape);
+      score.shape.score.add(system.shape);
 
       // Set links
       system.parent = score;

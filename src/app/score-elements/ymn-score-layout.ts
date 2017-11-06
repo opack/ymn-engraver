@@ -8,6 +8,12 @@ import { YmnLongNote } from './ymn-long-note';
  */
 export class YmnScoreLayout {
   public layout(score: YmnScore): void {
+    this.layoutScoreInformation(score);
+    this.drawContinuationLines(score);
+    this.centerScoreOnPage(score);
+  }
+
+  private layoutScoreInformation(score: YmnScore): void {
     // Layout score information
     score.shape.title.position({
       x: (ShapeConfig.score.width - score.shape.title.getClientRect().width) / 2,
@@ -35,8 +41,9 @@ export class YmnScoreLayout {
       const systemLayout = new YmnSystemLayout();
       yOffset = systemLayout.layout(system, yOffset);
     });
+  }
 
-    // Search long notes to draw continuation lines
+  private drawContinuationLines(score: YmnScore): void {
     const longNotes: Array<YmnLongNote> = [];
     score.children.forEach(system => {
       system.children.forEach(staff => {
@@ -46,5 +53,10 @@ export class YmnScoreLayout {
       });
     });
     score.shape.drawContinuationLines(longNotes);
+  }
+
+  private centerScoreOnPage(score: YmnScore): void {
+    const scoreBounds = score.shape.score.getClientRect();
+    score.shape.score.x((ShapeConfig.score.width - scoreBounds.width) / 2);
   }
 }
