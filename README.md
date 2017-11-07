@@ -12,6 +12,7 @@ B1| 2.10+7 2..10+7|
 B2|7 ..3 10. 10|
 # Roadmap
 * New features
+  * "Engrave" should swith to "Engraging" tab
   * Option pour ne pas afficher les x s'il n'est pas significatif
   * Toolbar
     * Save last 10 loaded files in a dropdown for load button
@@ -78,7 +79,9 @@ F#3|-1 3.8.-3 1.6|-2 2.7.1 5.8 5|-3 1.5 6.*.* 4
         partSeparator: /\-/g,
       }
     }
+  * Put all 3 tabs (edition, engraving, options) content in other html files
 * Bugfixes
+  * ymn-sheet width should be exact to the value of the score and not span through all of the parent
   * Draw the beat bar only if it is not the last of its measure.
 
 # Developing
