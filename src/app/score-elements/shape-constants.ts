@@ -30,7 +30,7 @@ export const ShapeConfig = {
   staff: {
     defaultHeight: 30,
     staffSeparator: {
-      stroke: 'black',
+      stroke: '#cccccc',
       strokeWidth: 1
     },
     systemSeparator: {
@@ -49,13 +49,14 @@ export const ShapeConfig = {
   measure: {
     octaveFontSize: 12,
     octaveWidth: 30,
+    separatorSpace: 3,
     stroke: 'black',
     strokeWidth: 1
   },
   beat: {
     stroke: 'black',
     strokeWidth: 1,
-    dash: [4, 4]
+    dash: [1, 0]
   },
   chord: {
     pitchSpacing: 5

@@ -4,6 +4,7 @@ import { ShapeConfig } from './shape-constants';
 export class YmnMeasureShape extends Konva.Group {
     public octave: Konva.Text;
     public separator: Konva.Line;
+    public separator2: Konva.Line;
 
     constructor() {
         super();
@@ -25,6 +26,15 @@ export class YmnMeasureShape extends Konva.Group {
             strokeWidth: ShapeConfig.measure.strokeWidth
         });
         this.add(this.separator);
+
+        this.separator2 = new Konva.Line({
+            points: [
+                0, 0,
+                0, ShapeConfig.staff.defaultHeight],
+            stroke: ShapeConfig.measure.stroke,
+            strokeWidth: ShapeConfig.measure.strokeWidth
+        });
+        this.add(this.separator2);
     }
 
     public update(octave: string): void {

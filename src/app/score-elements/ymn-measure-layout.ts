@@ -1,6 +1,7 @@
 import { YmnMeasure } from './ymn-measure';
 import { YmnBeat } from './ymn-beat';
 import { YmnBeatLayout } from './ymn-beat-layout';
+import { ShapeConfig } from './shape-constants';
 
 /**
  * Ensures that the measures in one measure are correcly laid out one to another
@@ -26,7 +27,7 @@ export class YmnMeasureLayout {
         } else {
             // Assumes that each measure has the same number of beats
             const nbBeats = measures[0].children.length;
-        
+
             const beats: Array<YmnBeat> = [];
             for (let curBeat = 0; curBeat < nbBeats; curBeat++) {
             // Get all beats at that position in the system across measures/staves
@@ -34,21 +35,22 @@ export class YmnMeasureLayout {
             measures.forEach(measure => {
                 beats.push(measure.children[curBeat]);
             });
-        
+
             // Layout the beats
             const beatLayout = new YmnBeatLayout();
             xOffset = beatLayout.layout(beats, xOffset);
             }
         }
-    
+
         // Update the measures position and size
         measures.forEach(measure => {
             measure.shape.x(initialOffset);
             measure.shape.octave.visible(measure.isOctaveMeasure);
             measure.shape.separator.x(xOffset);
+            measure.shape.separator2.x(xOffset + ShapeConfig.measure.separatorSpace);
             measure.shape.updateWidth();
         });
-        
+
         // Next measure position will be at the right of any of the measures at this position
         return measures[0].shape.x() + measures[0].shape.width();
     }
