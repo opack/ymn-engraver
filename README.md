@@ -12,8 +12,7 @@ B1| 2.10+7 2..10+7|
 B2|7 ..3 10. 10|
 # Roadmap
 * New features
-  * "Engrave" should swith to "Engraging" tab
-  * Option pour ne pas afficher les x s'il n'est pas significatif
+  * Option to not display the 'x' if they are not significant
   * Toolbar
     * Save last 10 loaded files in a dropdown for load button
   * Validate score input
@@ -53,8 +52,8 @@ F#3|-1 3.8.-3 1.6|-2 2.7.1 5.8 5|-3 1.5 6.*.* 4
               * Ecrire la note transposée sur cette portée
         * Fermer le système
   * Ability to modify rendering configuration (ShapeConfig)
+  * Make continuation line continue after the last chord of the system if applicable, and start before the first chord of the next system
   * Score edition
-    * Make continuation line continue after the last chord of the system if applicable, and start before the first chord of the next system
     * Ability to directly update only modified parts of the score and layout impacted parts
     * Add/remove parts from groups instead of using visible in order to improve performance
     * Add zoom (https://konvajs.github.io/docs/sandbox/Zooming_Relative_To_Pointer.html) and pan

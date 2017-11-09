@@ -1,9 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import * as FileSaver from 'file-saver';
+
 import { FileUtils } from '../utils/file-utils';
 import { StringUtils } from '../utils/string-utils';
+
 import { YmnSheetComponent } from './ymn-sheet/ymn-sheet.component';
 import { YmnDCRNTranslator } from './ymn-DCRN-translator';
+
+import { TabsetComponent } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -27,10 +31,11 @@ B1|..9.*|\n\
 B1| 2.10+7 2..10+7|\n\
 B2|7 ..3 10. 10|';
   @ViewChild('ymnSheet') ymnSheet: YmnSheetComponent;
-
+  @ViewChild('viewTabs') viewTabs: TabsetComponent;
 
   public engrave(): void {
     this.ymnSheet.engrave(this.title, this.author, parseInt(this.tempo, 10), this.score);
+    this.viewTabs.tabs[1].active = true;
   }
 
   public clear() {
