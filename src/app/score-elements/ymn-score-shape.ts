@@ -91,7 +91,7 @@ export class YmnScoreShape extends Konva.Layer {
   }
 
   private drawStraightLine(from: Konva.Vector2d, to: Konva.Vector2d) {
-    this.add(new Konva.Line({
+    this.continuationLines.add(new Konva.Line({
       points: [
         from.x, from.y,
         to.x, to.y
