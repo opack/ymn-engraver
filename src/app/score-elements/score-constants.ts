@@ -16,7 +16,7 @@ export const NOTES_TO_PITCHES: {[note: string]: string} = {
   'X': 'X',
 
   // English music notation
-  'CB': '1',
+  'CB': '12', // /!\ One octave down !!!
   'C': '1',
   'C#': '2',
   'DB': '2',
@@ -36,10 +36,10 @@ export const NOTES_TO_PITCHES: {[note: string]: string} = {
   'A#': '11',
   'BB': '11',
   'B': '12',
-  'B#': '1',
+  'B#': '1',  // /!\ One octave up !!!
 
   // French music notation
-  'DOB': '1',
+  'DOB': '12', // /!\ One octave down !!!
   'DO': '1',
   'DO#': '2',
   'REB': '2',
@@ -59,7 +59,7 @@ export const NOTES_TO_PITCHES: {[note: string]: string} = {
   'LA#': '11',
   'SIB': '11',
   'SI': '12',
-  'SI#': '1'
+  'SI#': '1'  // /!\ One octave up !!!
 };
 
 export const OCTAVE_INDICATION_REGEXP = /^((T|B)\d|0)$/i;
