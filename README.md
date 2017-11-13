@@ -12,6 +12,15 @@ B1| 2.10+7 2..10+7|
 B2|7 ..3 10. 10|
 # Roadmap
 * New features
+  * Maybe it would be clearer to draw one continuation line between the continuation note and its original note.
+  This would have no visual effect for straight continuation line, but would make curvy continuation line more clear
+  (and more easy to code and maintain).
+  * Allow #n/bn notation for YMN using CMN in order to simplify transposition from CMN
+    -> This allows the user to write what he sees in the key signature and then write each note without having to consider the key signature.
+    I.e. : if the CMN notation indicates 2 sharps in the key signature, then the user can write :
+    T1#2|C D E F G A B|
+    And it will be interpreted as if he wrote :
+    T1|C# D E F# G A B|
   * Option to not display the 'x' if they are not significant
   * Toolbar
     * Save last 10 loaded files in a dropdown for load button
