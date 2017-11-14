@@ -1,5 +1,17 @@
 <tabset #viewTabs>
-  <tab heading='Edition'>
+  <tab heading="DBG">
+    <ul *ngFor="let post of posts | async">
+      <li>
+        <strong>{{ post.title}}</strong>
+        <br>
+        {{post.content}}
+      </li>
+    </ul>
+    <input type="text" [(ngModel)]="titledbg" name="title" placeholder="Title..">
+    <textarea [(ngModel)]="content" name="content" placeholder="Content.."></textarea>
+    <input type="submit" value="Add a Post" (click)="addPost()">
+  </tab>
+  <tab heading="Edition">
     <div class="btn-group" dropdown>
       <button dropdownToggle type="button" class="btn dropdown-toggle">File<span class="caret"></span></button>
       <ul *dropdownMenu class="dropdown-menu" role="menu">
@@ -37,11 +49,11 @@
       <input type="file" #fileSelector (change)="load($event)" style="display:none" accept="text/json">
     </form>
   </tab>
-  <tab heading='Engraving'>
+  <tab heading="Engraving">
     <button type="button" class="btn btn-primary" (click)="ymnSheet.downloadImage()">Download</button>
     <ymn-sheet #ymnSheet></ymn-sheet>
   </tab>
-  <tab heading='Options'>
+  <tab heading="Options">
     Coming soon...
   </tab>
 </tabset>
