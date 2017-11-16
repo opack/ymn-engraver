@@ -18,7 +18,9 @@ interface Post {
   title: string;
   content: string;
 }
-
+interface PostId extends Post {
+  id: string;
+}
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -26,7 +28,9 @@ interface Post {
 })
 export class AppComponent implements OnInit {
   public postsCol: AngularFirestoreCollection<Post>;
-  public posts: Observable<Post[]>;
+  public posts: any;
+  public postDoc: AngularFirestoreDocument<Post>;
+  public post: Observable<Post>;
   public titledbg: string;
   public content: string;
 
@@ -51,8 +55,18 @@ B2|7 ..3 10. 10|';
   constructor(private afs: AngularFirestore) {}
 
   ngOnInit() {
-    this.postsCol = this.afs.collection('posts');
-    this.posts = this.postsCol.valueChanges();
+    // Retrieve posts collection, without any filtering
+    // this.postsCol = this.afs.collection('posts');
+    // Retrieve posts collection, filtering to get only those with a title of "test"
+    this.postsCol = this.afs.collection('posts', ref => ref.where('title', '==', 'test'));
+    this.posts = this.postsCol.snapshotChanges()
+      .map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data() as Post;
+          const id = a.payload.doc.id;
+          return { id, data };
+        });
+      });
   }
 
   addPost() {
@@ -60,6 +74,15 @@ B2|7 ..3 10. 10|';
     // this.afs.collection('posts').add({'title': this.titledbg, 'content': this.content});
     // Adding a document using a custom ID
     this.afs.collection('posts').doc(this.titledbg + this.content.substr(0, 5)).set({'title': this.titledbg, 'content': this.content});
+  }
+
+  getPost(postId) {
+    this.postDoc = this.afs.doc('posts/' + postId);
+    this.post = this.postDoc.valueChanges();
+  }
+
+  deletePost(postId) {
+    this.afs.doc('posts/' + postId).delete();
   }
 
   public engrave(): void {
