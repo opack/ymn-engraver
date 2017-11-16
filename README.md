@@ -12,6 +12,7 @@ B1| 2.10+7 2..10+7|
 B2|7 ..3 10. 10|
 # Roadmap
 * New features
+  * Add a "Library" tab to see all saved scores abd manage them (create, load, delete, copy)
   * Maybe it would be clearer to draw one continuation line between the continuation note and its original note.
   This would have no visual effect for straight continuation line, but would make curvy continuation line more clear
   (and more easy to code and maintain).
@@ -87,7 +88,7 @@ F#3|-1 3.8.-3 1.6|-2 2.7.1 5.8 5|-3 1.5 6.*.* 4
         partSeparator: /\-/g,
       }
     }
-  * Put all 3 tabs (edition, engraving, options) content in other html files
+  * Put all 3 tabs (edition, engraving, options) content in other components
 * Bugfixes
   * ymn-sheet width should be exact to the value of the score and not span through all of the parent
   * Draw the beat bar only if it is not the last of its measure.
