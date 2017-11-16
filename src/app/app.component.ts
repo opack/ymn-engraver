@@ -5,6 +5,7 @@ import { FileUtils } from '../utils/file-utils';
 import { StringUtils } from '../utils/string-utils';
 
 import { YmnSheetComponent } from './ymn-sheet/ymn-sheet.component';
+import { YmnLibraryComponent } from './ymn-library/ymn-library.component';
 import { YmnDCRNTranslator } from './ymn-DCRN-translator';
 
 import { TabsetComponent } from 'ngx-bootstrap';
@@ -21,6 +22,7 @@ interface Post {
 interface PostId extends Post {
   id: string;
 }
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -49,6 +51,7 @@ B1|..9.*|\n\
 -\n\
 B1| 2.10+7 2..10+7|\n\
 B2|7 ..3 10. 10|';
+  @ViewChild('ymnLibrary') ymnLibrary: YmnLibraryComponent;
   @ViewChild('ymnSheet') ymnSheet: YmnSheetComponent;
   @ViewChild('viewTabs') viewTabs: TabsetComponent;
 

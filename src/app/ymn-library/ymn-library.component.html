@@ -1,0 +1,9 @@
+<ul *ngFor="let score of scores | async">
+  <li (click)="get(score.id)">
+    <strong>{{ score.data.title}}</strong> (<a href="#" (click)="delete(score.id)">delete</a>)
+  </li>
+</ul>
+
+<h4>Preview :</h4>
+<strong>{{ (preview | async)?.title }}</strong>
+<p>{{ (preview | async)?.music }}</p>

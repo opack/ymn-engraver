@@ -1,21 +1,29 @@
+// Angular modules
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
-import { AppComponent } from './app.component';
-import { YmnSheetComponent } from './ymn-sheet/ymn-sheet.component';
-
+// NGX-Bootstrap components
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
-// Firebase imports
+// Firebase modules
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+
+// Application components
+import { AppComponent } from './app.component';
+import { YmnSheetComponent } from './ymn-sheet/ymn-sheet.component';
+import { YmnLibraryComponent } from './ymn-library/ymn-library.component';
+
+// Application services
+import { ScoreLibraryService } from './score-library.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    YmnSheetComponent
+    YmnSheetComponent,
+    YmnLibraryComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +40,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
     }),
     AngularFirestoreModule
   ],
-  providers: [],
+  providers: [ScoreLibraryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

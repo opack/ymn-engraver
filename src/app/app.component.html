@@ -16,6 +16,9 @@
     <textarea [(ngModel)]="content" name="content" placeholder="Content.."></textarea>
     <input type="submit" value="Add a Post" (click)="addPost()">
   </tab>
+  <tab heading="Library">
+    <ymn-library #ymnLibrary></ymn-library>
+  </tab>
   <tab heading="Edition">
     <div class="btn-group" dropdown>
       <button dropdownToggle type="button" class="btn dropdown-toggle">File<span class="caret"></span></button>
